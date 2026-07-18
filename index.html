@@ -18,6 +18,9 @@
           fontFamily: {
             sans: ['Outfit', 'sans-serif'],
             serif: ['Fraunces', 'serif'],
+          },
+          screens: {
+            'xs': '380px',
           }
         }
       }
@@ -26,7 +29,7 @@
 
   <style>
     :root {
-      /* Warm Linen / Cream Background (Gentle on the Eyes) */
+      /* Warm Linen / Cream Background */
       --app-bg: #F2ECE4;
       --paper: #FAF8F4;
       --ink: #2C2830;
@@ -48,7 +51,6 @@
 
       --shadow-sm: 0 4px 12px rgba(44, 40, 48, 0.05);
       --shadow-md: 0 12px 36px rgba(44, 40, 48, 0.12);
-      --shadow-lift: 0 24px 50px rgba(44, 40, 48, 0.18);
     }
 
     body {
@@ -59,7 +61,7 @@
       transition: background-color 0.3s ease;
     }
 
-    /* Prevent text selection during swipe gesture physics */
+    /* Prevent text selection during swipe gestures */
     .fcard {
       user-select: none;
       -webkit-user-select: none;
@@ -93,7 +95,7 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Completely opaque faces to solve transparency bug */
+    /* Completely opaque card faces to prevent overlap peeking */
     .face.front {
       background-color: var(--paper);
       transform: rotateY(0deg);
@@ -106,7 +108,7 @@
       z-index: 1;
     }
 
-    /* Wavy grid vectors replicating IMG_6975.jpeg */
+    /* Wavy grid vectors replicating natural lines */
     .grid-blue {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/></svg>");
     }
@@ -120,13 +122,13 @@
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/></svg>");
     }
 
-    /* Hand-drawn circular spotlight (No dashed lines and perfectly matches the rest of the card background) */
+    /* Hand-drawn circular spotlight with no border lines */
     .spotlight {
       width: 90%;
-      height: 82%;
-      background: var(--paper); /* Matches the front card background exactly */
+      height: 84%;
+      background: var(--paper);
       border-radius: 48% 52% 47% 53% / 51% 48% 52% 49%;
-      border: none; /* Removed the dashed outline completely */
+      border: none;
       box-shadow: inset 0 2px 8px rgba(44, 40, 48, 0.02), var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -137,14 +139,14 @@
       position: relative;
     }
 
-    /* Painted tape banner style for the French word (Straightened) */
+    /* Straightened painted tape banner style for French words */
     .word-banner {
       padding: 8px 24px;
       border-radius: 12px;
       color: #FFFFFF;
       font-weight: 600;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      transform: none; /* Completely straightened */
+      transform: none;
       max-width: 92%;
       word-wrap: break-word;
       display: inline-flex;
@@ -152,16 +154,16 @@
       justify-content: center;
     }
 
-    /* Theme backgrounds for card back colors */
+    /* Theme card back colors */
     .theme-blue { background-color: var(--theme-blue-bg); }
     .theme-orange { background-color: var(--theme-orange-bg); }
     .theme-sage { background-color: var(--theme-sage-bg); }
     .theme-rose { background-color: var(--theme-rose-bg); }
 
-    /* Animated, morphing organic geometric shape backgrounds */
+    /* Animated, morphing organic shapes on the backside */
     .geo-shape {
-      width: 190px;
-      height: 190px;
+      width: 200px;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -217,7 +219,7 @@
       to { transform: none; opacity: 1; }
     }
 
-    /* Complete opacity guard to prevent content of background cards from bleeding/peeking through */
+    /* Opacity guard to prevent lower card content from bleeding through */
     .fcard.behind .spotlight,
     .fcard.behind .geo-shape,
     .fcard.behind2 .spotlight,
@@ -226,14 +228,13 @@
       transition: opacity 0.2s ease;
     }
 
-    /* Instantly fade back in when promoted to the front active card */
     .fcard:not(.behind):not(.behind2) .spotlight,
     .fcard:not(.behind):not(.behind2) .geo-shape {
       opacity: 1 !important;
       transition: opacity 0.25s ease;
     }
 
-    /* Hide Illustrative examples when the minimal eye toggle class is active */
+    /* Hide Illustrative examples when minimal toggle is active */
     .hide-examples .illustration-text {
       display: none !important;
     }
@@ -242,7 +243,7 @@
       gap: 0px !important;
     }
 
-    /* Ultra-minimalist and simple modern swipe indicators */
+    /* Minimalist swipe feedback badges */
     .stamp {
       position: absolute;
       top: 24px;
@@ -321,62 +322,47 @@
   </style>
 </head>
 
-<body class="h-dvh w-screen flex flex-col items-center justify-between p-4 md:p-6 select-none overflow-hidden">
+<body class="h-dvh w-screen flex flex-col items-center justify-between p-4 md:p-6 pb-28 md:pb-6 select-none overflow-hidden relative">
 
-  <!-- ---------- STREAMING_CHUNK: Merging the eye toggle button into the header menu ... ---------- -->
-  <header class="w-full max-w-[380px] md:max-w-[850px] flex items-center justify-between py-1.5 md:py-2 z-20 shrink-0 gap-3">
-    <div class="brand font-serif font-semibold text-xl md:text-2xl text-slate-800 tracking-tight flex items-center gap-1.5 select-none">
+  <!-- Header Section: Centered title on mobile, aligned on desktop -->
+  <header class="w-full max-w-[380px] md:max-w-[850px] flex items-center justify-center md:justify-between py-3 md:py-2 z-20 shrink-0">
+    <div class="brand font-serif font-semibold text-2xl text-slate-800 tracking-tight flex items-center gap-1.5 select-none text-center">
       Car<em>tes</em>
-      <span class="w-1.5 h-1.5 rounded-full bg-[#E38379] hidden sm:inline-block"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-[#E38379]"></span>
     </div>
-    
-    <nav class="tabs flex items-center bg-slate-200/50 p-0.5 md:p-1 rounded-full border border-slate-300/30 backdrop-blur-sm shrink-0 gap-1">
-      <button id="tabStudy" class="px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all text-slate-600 active bg-white !text-slate-800 shadow-sm">Étudier</button>
-      <button id="tabManage" class="px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all text-slate-500">Ajouter</button>
-      <div class="h-4 w-[1px] bg-slate-300/60 mx-1"></div>
-      <button id="btnToggleExamples" aria-label="Masquer les exemples" class="w-7 h-7 rounded-full flex items-center justify-center text-slate-500 transition-all hover:bg-white/80 hover:text-slate-800 active:scale-95">
-        <!-- Eye Icon (visible by default) -->
-        <svg id="eyeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-      </button>
-    </nav>
   </header>
 
-  <!-- Main view wrapper allowing full viewport bleed for swipes -->
-  <main class="w-full max-w-[380px] md:max-w-[850px] flex-grow flex flex-col justify-center overflow-visible py-1 md:py-2">
+  <!-- Main View Area: Expands dynamically on mobile to show larger card stack -->
+  <main class="w-full max-w-[380px] md:max-w-[850px] flex-grow flex flex-col justify-center overflow-visible py-2">
     
-    <!-- VIEW STUDY: Pure minimalist card viewport with enabled overflow so cards slide out completely -->
+    <!-- STUDY VIEW: Action buttons hidden entirely on mobile for a distraction-free swipe experience -->
     <section id="viewStudy" class="w-full h-full flex flex-col justify-between overflow-visible">
       
-      <!-- Minimalist Progress Tracker & Eye Toggle Container -->
-      <div class="w-full flex justify-between items-center px-2 shrink-0 mb-2 md:mb-4 text-slate-500 text-xs font-semibold relative">
+      <!-- Minimalist Progress Stats -->
+      <div class="w-full flex justify-between items-center px-4 shrink-0 mb-3 md:mb-4 text-slate-500 text-xs font-semibold relative">
         <span id="deckCount" class="w-1/2 text-left text-[11px] md:text-xs">0 restants</span>
         <span id="masteredCount" class="w-1/2 text-right text-[11px] md:text-xs">0 acquis</span>
       </div>
 
-      <!-- Main Deck Canvas Area - strictly capped at compact card size so it never stretches on widescreen -->
-      <div class="relative w-full max-w-[280px] xs:max-w-[310px] md:max-w-[330px] aspect-[3/4] max-h-[50vh] xs:max-h-[55vh] md:max-h-[520px] flex-grow mx-auto my-2 md:my-3 overflow-visible">
+      <!-- Main Deck Canvas Area: Capped on desktop, expanded on mobile to look bold and beautiful -->
+      <div class="relative w-full max-w-[300px] xs:max-w-[330px] md:max-w-[330px] aspect-[3/4] h-[60vh] xs:h-[62vh] md:max-h-[520px] flex-grow mx-auto my-1 md:my-3 overflow-visible">
         <div id="deck" class="relative w-full h-full overflow-visible">
           <!-- Dynamic card injections -->
         </div>
       </div>
 
-      <!-- Tactical UI Controls underneath cards -->
-      <div class="shrink-0 flex flex-col items-center gap-2 md:gap-3 mt-2 md:mt-4">
+      <!-- Desktop-only controls block: Hidden on mobile to let the cards take center stage -->
+      <div class="shrink-0 hidden md:flex flex-col items-center gap-2 md:gap-3 mt-4">
         <div id="actions" class="flex justify-center items-center gap-5 md:gap-6">
-          <!-- Revoir Trigger -->
-          <button id="btnLeft" aria-label="À revoir" class="tactile-btn btn-revoir w-[48px] h-[48px] md:w-[52px] md:h-[52px]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="md:w-[22px] md:h-[22px]">
+          <button id="btnLeft" aria-label="À revoir" class="tactile-btn btn-revoir w-[52px] h-[52px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <path d="M1 4v6h6" />
               <path d="M3.5 15a9 9 0 1 0 2-9.7L1 10" />
             </svg>
           </button>
           
-          <!-- Rotate / Flip Trigger -->
-          <button id="btnFlip" aria-label="Retourner la carte" class="tactile-btn btn-flip w-[38px] h-[38px] md:w-[42px] md:h-[42px]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="md:w-[16px] md:h-[16px]">
+          <button id="btnFlip" aria-label="Retourner la carte" class="tactile-btn btn-flip w-[42px] h-[42px]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 2l4 4-4 4" />
               <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
               <path d="M7 22l-4-4 4-4" />
@@ -384,28 +370,24 @@
             </svg>
           </button>
           
-          <!-- Acquis Trigger -->
-          <button id="btnRight" aria-label="Acquis" class="tactile-btn btn-acquis w-[48px] h-[48px] md:w-[52px] md:h-[52px]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" class="md:w-[22px] md:h-[22px]">
+          <button id="btnRight" aria-label="Acquis" class="tactile-btn btn-acquis w-[52px] h-[52px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
               <path d="M20 6L9 17l-5-5" />
             </svg>
           </button>
         </div>
-
-        <span class="text-slate-400 text-[9px] uppercase tracking-wider font-semibold text-center select-none hidden md:inline-block">
+        <span class="text-slate-400 text-[10px] uppercase tracking-wider font-semibold text-center select-none">
           Glisser pour trier · Clic pour retourner
         </span>
       </div>
     </section>
 
-    <!-- VIEW MANAGE: Form layout beautifully centered inside display frame -->
+    <!-- CARD CREATOR VIEW: Beautiful paper form perfectly proportioned and centered on the screen -->
     <section id="viewManage" class="hidden w-full h-full flex-col justify-center items-center overflow-visible">
-      
-      <!-- Compact floating paper container for creating cards -->
       <div class="bg-white rounded-[32px] p-5 md:p-6 shadow-md w-full max-w-[320px] md:max-w-[360px] mx-auto">
         <h3 class="font-serif font-semibold text-base md:text-lg text-slate-800 mb-3 md:mb-4 text-center">Nouvelle carte</h3>
         
-        <div class="grid grid-cols-2 gap-2 md:gap-3 mb-2 md:mb-3">
+        <div class="grid grid-cols-2 gap-3 mb-3">
           <div>
             <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Français</label>
             <input id="inFr" placeholder="ex: Fier" class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
@@ -418,10 +400,10 @@
 
         <div class="mb-4 md:mb-5">
           <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Explication ou Exemple (optionnel)</label>
-          <textarea id="inDesc" placeholder="ex: Quand ton cœur bat tout fort et grandit..." class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800 h-[60px] md:h-[68px] resize-none"></textarea>
+          <textarea id="inDesc" placeholder="ex: Quand ton cœur bat tout fort et grandit..." class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800 h-[64px] md:h-[68px] resize-none"></textarea>
         </div>
 
-        <button id="btnAdd" disabled class="w-full py-2 md:py-2.5 bg-[#2C2830] text-white text-xs font-semibold rounded-xl hover:bg-slate-800 active:scale-95 transition-all disabled:opacity-35 disabled:cursor-not-allowed">
+        <button id="btnAdd" disabled class="w-full py-2.5 bg-[#2C2830] text-white text-xs font-semibold rounded-xl hover:bg-slate-800 active:scale-95 transition-all disabled:opacity-35 disabled:cursor-not-allowed">
           Ajouter au jeu
         </button>
       </div>
@@ -429,10 +411,22 @@
 
   </main>
 
-  <!-- Micro Toast Alerts -->
+  <!-- Sizable Integrated Navigation Bar at bottom on mobile, repositioning cleanly on desktop header -->
+  <nav class="tabs fixed bottom-6 left-1/2 -translate-x-1/2 md:absolute md:top-6 md:bottom-auto md:right-6 md:left-auto md:translate-x-0 flex items-center bg-white md:bg-slate-200/50 p-1 md:p-1 rounded-full border border-slate-300/40 backdrop-blur-md shadow-lg md:shadow-none z-30 shrink-0 gap-1 md:gap-1">
+    <button id="tabStudy" class="px-5 md:px-5 py-2 md:py-1.5 text-xs md:text-xs font-semibold rounded-full transition-all text-slate-600 active bg-slate-800 text-white md:bg-white md:!text-slate-800 shadow-sm">Étudier</button>
+    <button id="tabManage" class="px-5 md:px-5 py-2 md:py-1.5 text-xs md:text-xs font-semibold rounded-full transition-all text-slate-500">Ajouter</button>
+    <div id="navDivider" class="h-4 w-[1px] bg-slate-300/60 mx-1"></div>
+    <button id="btnToggleExamples" aria-label="Masquer les exemples" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-800 active:scale-95">
+      <svg id="eyeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Minimal Notifications Toast -->
   <div id="toast" class="toast"></div>
 
-  <!-- ---------- STREAMING_CHUNK: Loading client storage adapters and state machine ... ---------- -->
   <script>
     (() => {
       'use strict';
@@ -450,7 +444,7 @@
       let animating = false;
       let hideExamples = false;
 
-      // Cute context descriptions mapping IMG_6975.jpeg
+      // Delightful conversational definitions
       const cuteExplorations = {
         'à gauche': "Quand tu tournes du côté de ton cœur, là où la montre ne tourne pas.",
         'à droite': "Le côté de la main avec laquelle tu dessines souvent tes plus belles maisons.",
@@ -474,7 +468,7 @@
         'ravi(e)': "Un grand sourire qui s'affiche sur ton visage et des petits papillons dans le cœur.",
         'bouleversé(e)': "Quand tes émotions se mélangent dans une grande tempête et que tu as besoin d'un gros câlin.",
         'méfiant(e)': "Quand tu fronces un peu les sourcils et regardes de côté pour voir s'il n'y a pas un piège.",
-        'avoir hâte de': "Compter les dodos sur ses doigts en attendant le jour d'une surprise.",
+        'avoir hâte de': "Compter les dodos sur ses doigts en attendant le jour d'une merveilleuse surprise.",
         'en avoir marre de': "Croiser fermement les bras en soupirant parce qu'on a déjà fait ça trop de fois.",
         'se réveiller': "Ouvrir doucement les yeux le matin quand le premier rayon de soleil chatouille ton nez.",
         'se dépêcher': "Mettre ses chaussures en vitesse pour ne pas laisser filer l'autobus de l'école.",
@@ -513,7 +507,7 @@
         'malgré': "Avancer courageusement sous la pluie sans perdre son sourire.",
         'dorénavant': "À partir de maintenant, on fera les choses avec un regard tout nouveau.",
         'parfois': "Pas tous les jours, juste quand une petite fée décide de passer.",
-        'souvent': "De nombreuses fois, presque comme une habitude qu'on adore répétée.",
+        'souvent': "De nombreuses fois, presque comme une habitude qu'on adore répéter.",
         'rarement': "Aussi exceptionnel que de croiser un trèfle à quatre feuilles dans le jardin.",
         'tout à l’heure': "Dans un petit moment, juste après avoir fini de ranger nos crayons.",
         'la veille': "Le jour juste avant, celui qui s'est endormi pour laisser place à aujourd'hui.",
@@ -523,7 +517,7 @@
         'tous les deux jours': "Sauter un dodo sur deux pour faire une jolie routine régulière.",
         'de temps en temps': "Quand l'envie nous prend, comme une surprise au milieu de la semaine.",
         'le rez-de-chaussée': "La partie de la maison qui touche la terre et où les pas résonnent directement.",
-        'l’étage': "Monter le bel escalier pour se rapprocher un peu plus du ciel.",
+        'l’étage': "La jolie grimpette par l'escalier de bois pour se rapprocher doucement des nuages.",
         'le grenier': "Le nid secret sous le toit où dorment les vieux jouets et les souvenirs oubliés.",
         'le sous-sol': "Sous les pieds, là où dorment les outils et les réserves de confitures.",
         'la cour': "Un petit carré de liberté dehors pour courir sous le grand soleil.",
@@ -537,13 +531,13 @@
         'atteindre': "Tendre le bras très fort pour décrocher la plus haute pomme de l'arbre.",
         'craindre': "Ce frisson qui arrive quand l'orage gronde ou que l'ombre est un peu trop grande.",
         'résoudre': "Trouver la clé d'une énigme compliquée pour voir le sourire revenir.",
-        'se plaindre': "Dire son chagrin ou sa colère avec de petits mots fâchés.",
+        'se plaindre': "Laisser parler sa peine en chuchotant de petits mots tristes.",
         'convaincre': "Partager ses arguments avec tant de passion que l'autre finit par dire oui.",
         's’apercevoir de': "Remarquer soudain une petite coccinelle posée sur sa manche.",
         'se débrouiller': "Trouver une idée astucieuse tout seul comme un grand.",
         'avoir beau + inf.': "Essayer encore et encore sans réussir, mais avec beaucoup de courage.",
         'valoir la peine': "Un effort qui coûte un peu mais qui apporte tellement de bonheur à la fin.",
-        'il s’agit de': "Le sujet principal du jeu, le but secret qu'on doit découvrir ensemble."
+        'il s’agit de': "Le but secret du jeu, ce qu'on doit découvrir ensemble."
       };
 
       const seed = [
@@ -590,7 +584,7 @@
             state = JSON.parse(res.value);
           }
         } catch (e) {
-          console.warn('Fallback storage initiated');
+          console.warn('Fallback storage active');
         }
 
         state.cards.forEach(c => {
@@ -621,7 +615,7 @@
           try {
             await getStorage().set(KEY, JSON.stringify(state));
           } catch (e) {
-            console.warn('Save sequence error', e);
+            console.warn('Persistence save error', e);
           }
         }, 250);
       }
@@ -644,17 +638,15 @@
       function toast(msg) {
         const t = $('toast');
         t.textContent = msg;
-        t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-8 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-0 opacity-100";
+        t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-24 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-0 opacity-100";
         clearTimeout(t._h);
         t._h = setTimeout(() => {
-          t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-8 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-4 opacity-0 pointer-events-none";
+          t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-24 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-4 opacity-0 pointer-events-none";
         }, 1800);
       }
 
-      /* ---------- STREAMING_CHUNK: Managing card shuffler queue lists ... ---------- */
       function rebuildQueue() {
         queue = learning().map(c => c.id);
-        
         for (let i = queue.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [queue[i], queue[j]] = [queue[j], queue[i]];
@@ -790,7 +782,6 @@
         }[m]));
       }
 
-      /* ---------- STREAMING_CHUNK: Binding pointer gestures for card flyoffs ... ---------- */
       function attachDrag(el) {
         if (!el) return;
         let startX = 0, startY = 0, dx = 0, dy = 0;
@@ -929,7 +920,6 @@
         }, 300);
       }
 
-      /* ---------- STREAMING_CHUNK: Binding button events and form handlers... ---------- */
       function buttonSwipe(dir) {
         const el = deckEl.lastElementChild;
         if (!el || animating) return;
@@ -1012,18 +1002,18 @@
         toast('Carte ajoutée !');
       }
 
-      /* ---------- STREAMING_CHUNK: Refining the tab focus toggles and context rules ... ---------- */
       function switchTab(which) {
         const study = which === 'study';
         
-        const activeClass = 'px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all bg-white !text-slate-800 shadow-sm';
-        const inactiveClass = 'px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all text-slate-500';
+        // Dynamic classes based on screen size to preserve optimal touch surfaces
+        const activeClassMobile = 'px-6 py-2 md:px-5 md:py-1.5 text-xs font-semibold rounded-full transition-all bg-slate-800 text-white md:bg-white md:!text-slate-800 md:shadow-sm';
+        const inactiveClassMobile = 'px-5 py-2 md:px-5 md:py-1.5 text-xs font-semibold rounded-full transition-all text-slate-500';
         
-        $('tabStudy').className = study ? activeClass : inactiveClass;
-        $('tabManage').className = !study ? activeClass : inactiveClass;
+        $('tabStudy').className = study ? activeClassMobile : inactiveClassMobile;
+        $('tabManage').className = !study ? activeClassMobile : inactiveClassMobile;
         
-        // Hide the eye-toggle icon when adding new cards to keep layout focused
         $('btnToggleExamples').style.display = study ? 'flex' : 'none';
+        $('navDivider').style.display = study ? 'block' : 'none';
         
         if (study) {
           $('viewStudy').classList.add('flex');
