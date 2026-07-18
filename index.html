@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>Cartes · Minimalist French Flashcards</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <script>
     tailwind.config = {
       theme: {
@@ -32,20 +32,15 @@
       --ink: #2C2830;
       --ink-soft: #635E6A;
       --ink-faint: #BAB4C1;
-      
       /* Pure themed card backgrounds */
       --theme-blue-bg: #4C599E;
       --theme-blue-blob: rgba(255, 255, 255, 0.18);
-      
       --theme-orange-bg: #F3D086;
       --theme-orange-blob: rgba(255, 255, 255, 0.22);
-      
       --theme-sage-bg: #87A691;
       --theme-sage-blob: rgba(255, 255, 255, 0.2);
-      
       --theme-rose-bg: #D48A93;
       --theme-rose-blob: rgba(255, 255, 255, 0.22);
-
       --shadow-sm: 0 4px 12px rgba(44, 40, 48, 0.05);
       --shadow-md: 0 12px 36px rgba(44, 40, 48, 0.12);
       --shadow-lift: 0 24px 50px rgba(44, 40, 48, 0.18);
@@ -110,12 +105,15 @@
     .grid-blue {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/></svg>");
     }
+
     .grid-orange {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 11 18 10 T 36 10' fill='none' stroke='%23FCEFD9' stroke-width='1.2'/><path d='M 10 0 Q 11 9 10 18 T 10 36' fill='none' stroke='%23FCEFD9' stroke-width='1.2'/></svg>");
     }
+
     .grid-sage {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 9 18 10 T 36 10' fill='none' stroke='%23E1EBE4' stroke-width='1.2'/><path d='M 10 0 Q 9 9 10 18 T 10 36' fill='none' stroke='%23E1EBE4' stroke-width='1.2'/></svg>");
     }
+
     .grid-rose {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/></svg>");
     }
@@ -124,9 +122,11 @@
     .spotlight {
       width: 90%;
       height: 82%;
-      background: var(--paper); /* Matches the front card background exactly */
+      background: var(--paper);
+      /* Matches the front card background exactly */
       border-radius: 48% 52% 47% 53% / 51% 48% 52% 49%;
-      border: none; /* Removed the dashed outline completely */
+      border: none;
+      /* Removed the dashed outline completely */
       box-shadow: inset 0 2px 8px rgba(44, 40, 48, 0.02), var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -144,7 +144,8 @@
       color: #FFFFFF;
       font-weight: 600;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      transform: none; /* Completely straightened */
+      transform: none;
+      /* Completely straightened */
       max-width: 92%;
       word-wrap: break-word;
       display: inline-flex;
@@ -153,10 +154,21 @@
     }
 
     /* Theme backgrounds for card back colors */
-    .theme-blue { background-color: var(--theme-blue-bg); }
-    .theme-orange { background-color: var(--theme-orange-bg); }
-    .theme-sage { background-color: var(--theme-sage-bg); }
-    .theme-rose { background-color: var(--theme-rose-bg); }
+    .theme-blue {
+      background-color: var(--theme-blue-bg);
+    }
+
+    .theme-orange {
+      background-color: var(--theme-orange-bg);
+    }
+
+    .theme-sage {
+      background-color: var(--theme-sage-bg);
+    }
+
+    .theme-rose {
+      background-color: var(--theme-rose-bg);
+    }
 
     /* Animated, morphing organic geometric shape backgrounds */
     .geo-shape {
@@ -174,22 +186,30 @@
       border-radius: 54% 46% 62% 38% / 44% 56% 44% 56%;
       background: var(--theme-blue-blob);
     }
+
     .geo-shape.shape-2 {
       border-radius: 38% 62% 42% 58% / 52% 38% 62% 48%;
       background: var(--theme-orange-blob);
     }
+
     .geo-shape.shape-3 {
       border-radius: 48% 52% 32% 68% / 42% 68% 32% 58%;
       background: var(--theme-sage-blob);
     }
+
     .geo-shape.shape-4 {
       border-radius: 62% 38% 48% 52% / 58% 32% 68% 42%;
       background: var(--theme-rose-blob);
     }
 
     @keyframes morphingBlob {
-      0% { transform: scale(1) rotate(0deg); }
-      100% { transform: scale(1.06) rotate(12deg); }
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      100% {
+        transform: scale(1.06) rotate(12deg);
+      }
     }
 
     .fcard.behind {
@@ -213,8 +233,15 @@
     }
 
     @keyframes cardEnter {
-      from { transform: scale(0.92) translateY(20px); opacity: 0; }
-      to { transform: none; opacity: 1; }
+      from {
+        transform: scale(0.92) translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: none;
+        opacity: 1;
+      }
     }
 
     /* Complete opacity guard to prevent content of background cards from bleeding/peeking through */
@@ -237,7 +264,7 @@
     .hide-examples .illustration-text {
       display: none !important;
     }
-    
+
     .hide-examples .spotlight {
       gap: 0px !important;
     }
@@ -258,12 +285,14 @@
       z-index: 30;
       transition: opacity 0.1s ease;
     }
+
     .stamp.acquis {
       right: 24px;
       color: #1E4620;
       background-color: #E2F3E5;
       transform: none;
     }
+
     .stamp.revoir {
       left: 24px;
       color: #611D24;
@@ -297,6 +326,7 @@
       color: #D48A93;
       border: 1.5px solid rgba(212, 138, 147, 0.18);
     }
+
     .btn-revoir:hover {
       background-color: #FCE8E9;
     }
@@ -306,6 +336,7 @@
       color: #635E6A;
       border: 1.5px solid rgba(99, 94, 106, 0.12);
     }
+
     .btn-flip:hover {
       background-color: #FAF8F4;
     }
@@ -315,6 +346,7 @@
       color: #87A691;
       border: 1.5px solid rgba(135, 166, 145, 0.18);
     }
+
     .btn-acquis:hover {
       background-color: #E2F3E5;
     }
@@ -324,28 +356,28 @@
 <body class="h-dvh w-screen flex flex-col items-center justify-between p-4 md:p-6 select-none overflow-hidden">
 
   <!-- ---------- STREAMING_CHUNK: Structuring page layouts and headers... ---------- -->
-  <header class="w-full max-w-[380px] md:max-w-[850px] flex items-center justify-between py-2 z-20 shrink-0">
-    <div class="brand font-serif font-semibold text-2xl text-slate-800 tracking-tight flex items-center gap-2">
+  <header class="w-full max-w-[380px] md:max-w-[850px] flex items-center justify-between py-1.5 md:py-2 z-20 shrink-0 gap-3">
+    <div class="brand font-serif font-semibold text-xl md:text-2xl text-slate-800 tracking-tight flex items-center gap-1.5 select-none">
       Car<em>tes</em>
-      <span class="w-2 h-2 rounded-full bg-[#E38379]"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-[#E38379] hidden sm:inline-block"></span>
     </div>
-    
-    <nav class="tabs flex bg-slate-200/50 p-1 rounded-full border border-slate-300/30 backdrop-blur-sm">
-      <button id="tabStudy" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 active bg-white !text-slate-800 shadow-sm">Étudier</button>
-      <button id="tabManage" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-500">Ajouter</button>
+
+    <nav class="tabs flex bg-slate-200/50 p-0.5 md:p-1 rounded-full border border-slate-300/30 backdrop-blur-sm shrink-0">
+      <button id="tabStudy" class="px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all text-slate-600 active bg-white !text-slate-800 shadow-sm">Étudier</button>
+      <button id="tabManage" class="px-3.5 md:px-5 py-1 md:py-1.5 text-[11px] md:text-xs font-semibold rounded-full transition-all text-slate-500">Ajouter</button>
     </nav>
   </header>
 
   <!-- Main view wrapper allowing full viewport bleed for swipes -->
-  <main class="w-full max-w-[380px] md:max-w-[850px] flex-grow flex flex-col justify-center overflow-visible py-2">
-    
+  <main class="w-full max-w-[380px] md:max-w-[850px] flex-grow flex flex-col justify-center overflow-visible py-1 md:py-2">
+
     <!-- VIEW STUDY: Pure minimalist card viewport with enabled overflow so cards slide out completely -->
     <section id="viewStudy" class="w-full h-full flex flex-col justify-between overflow-visible">
-      
+
       <!-- Minimalist Progress Tracker & Eye Toggle Container -->
-      <div class="w-full flex justify-between items-center px-2 shrink-0 mb-4 text-slate-500 text-xs font-semibold relative">
-        <span id="deckCount" class="w-1/4 text-left">0 restants</span>
-        
+      <div class="w-full flex justify-between items-center px-2 shrink-0 mb-2 md:mb-4 text-slate-500 text-xs font-semibold relative">
+        <span id="deckCount" class="w-1/4 text-left text-[11px] md:text-xs">0 restants</span>
+
         <!-- Minimal Eye Toggle Button (Safely aligned in the horizontal flex stream, never overlapping) -->
         <button id="btnToggleExamples" aria-label="Masquer les exemples" class="w-8 h-8 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-slate-300/30 flex items-center justify-center text-slate-500 transition-all hover:bg-white hover:scale-105 active:scale-95">
           <!-- Eye Icon (visible by default) -->
@@ -355,46 +387,46 @@
           </svg>
         </button>
 
-        <span id="masteredCount" class="w-1/4 text-right">0 acquis</span>
+        <span id="masteredCount" class="w-1/4 text-right text-[11px] md:text-xs">0 acquis</span>
       </div>
 
       <!-- Main Deck Canvas Area - strictly capped at compact card size so it never stretches on widescreen -->
-      <div class="relative w-full max-w-[310px] md:max-w-[330px] aspect-[3/4] flex-grow mx-auto my-3 overflow-visible">
+      <div class="relative w-full max-w-[280px] xs:max-w-[310px] md:max-w-[330px] aspect-[3/4] max-h-[50vh] xs:max-h-[55vh] md:max-h-[520px] flex-grow mx-auto my-2 md:my-3 overflow-visible">
         <div id="deck" class="relative w-full h-full overflow-visible">
           <!-- Dynamic card injections -->
         </div>
       </div>
 
       <!-- Tactical UI Controls underneath cards -->
-      <div class="shrink-0 flex flex-col items-center gap-3 mt-4">
-        <div id="actions" class="flex justify-center items-center gap-6">
+      <div class="shrink-0 flex flex-col items-center gap-2 md:gap-3 mt-2 md:mt-4">
+        <div id="actions" class="flex justify-center items-center gap-5 md:gap-6">
           <!-- Revoir Trigger -->
-          <button id="btnLeft" aria-label="À revoir" class="tactile-btn btn-revoir w-[52px] h-[52px]">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <button id="btnLeft" aria-label="À revoir" class="tactile-btn btn-revoir w-[48px] h-[48px] md:w-[52px] md:h-[52px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="md:w-[22px] md:h-[22px]">
               <path d="M1 4v6h6" />
               <path d="M3.5 15a9 9 0 1 0 2-9.7L1 10" />
             </svg>
           </button>
-          
+
           <!-- Rotate / Flip Trigger -->
-          <button id="btnFlip" aria-label="Retourner la carte" class="tactile-btn btn-flip w-[42px] h-[42px]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <button id="btnFlip" aria-label="Retourner la carte" class="tactile-btn btn-flip w-[38px] h-[38px] md:w-[42px] md:h-[42px]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="md:w-[16px] md:h-[16px]">
               <path d="M17 2l4 4-4 4" />
               <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
               <path d="M7 22l-4-4 4-4" />
               <path d="M21 13v1a4 4 0 0 1-4 4H3" />
             </svg>
           </button>
-          
+
           <!-- Acquis Trigger -->
-          <button id="btnRight" aria-label="Acquis" class="tactile-btn btn-acquis w-[52px] h-[52px]">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
+          <button id="btnRight" aria-label="Acquis" class="tactile-btn btn-acquis w-[48px] h-[48px] md:w-[52px] md:h-[52px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" class="md:w-[22px] md:h-[22px]">
               <path d="M20 6L9 17l-5-5" />
             </svg>
           </button>
         </div>
 
-        <span class="text-slate-400 text-[9px] uppercase tracking-wider font-semibold text-center select-none">
+        <span class="text-slate-400 text-[9px] uppercase tracking-wider font-semibold text-center select-none hidden md:inline-block">
           Glisser pour trier · Clic pour retourner
         </span>
       </div>
@@ -402,28 +434,28 @@
 
     <!-- VIEW MANAGE: Form layout beautifully centered inside display frame -->
     <section id="viewManage" class="hidden w-full h-full flex-col justify-center items-center overflow-visible">
-      
+
       <!-- Compact floating paper container for creating cards -->
-      <div class="bg-white rounded-[32px] p-6 shadow-md w-full max-w-[340px] md:max-w-[360px] mx-auto">
-        <h3 class="font-serif font-semibold text-lg text-slate-800 mb-4 text-center">Nouvelle carte</h3>
-        
-        <div class="grid grid-cols-2 gap-3 mb-3">
+      <div class="bg-white rounded-[32px] p-5 md:p-6 shadow-md w-full max-w-[320px] md:max-w-[360px] mx-auto">
+        <h3 class="font-serif font-semibold text-base md:text-lg text-slate-800 mb-3 md:mb-4 text-center">Nouvelle carte</h3>
+
+        <div class="grid grid-cols-2 gap-2 md:gap-3 mb-2 md:mb-3">
           <div>
             <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Français</label>
-            <input id="inFr" placeholder="ex: Fier" class="w-full text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
+            <input id="inFr" placeholder="ex: Fier" class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
           </div>
           <div>
             <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">English</label>
-            <input id="inEn" placeholder="ex: Proud" class="w-full text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
+            <input id="inEn" placeholder="ex: Proud" class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
           </div>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-4 md:mb-5">
           <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Explication ou Exemple (optionnel)</label>
-          <textarea id="inDesc" placeholder="ex: Quand ton cœur bat tout fort et grandit..." class="w-full text-sm rounded-xl px-3 py-2.5 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800 h-[68px] resize-none"></textarea>
+          <textarea id="inDesc" placeholder="ex: Quand ton cœur bat tout fort et grandit..." class="w-full text-xs md:text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800 h-[60px] md:h-[68px] resize-none"></textarea>
         </div>
 
-        <button id="btnAdd" disabled class="w-full py-2.5 bg-[#2C2830] text-white text-xs font-semibold rounded-xl hover:bg-slate-800 active:scale-95 transition-all disabled:opacity-35 disabled:cursor-not-allowed">
+        <button id="btnAdd" disabled class="w-full py-2 md:py-2.5 bg-[#2C2830] text-white text-xs font-semibold rounded-xl hover:bg-slate-800 active:scale-95 transition-all disabled:opacity-35 disabled:cursor-not-allowed">
           Ajouter au jeu
         </button>
       </div>
@@ -438,20 +470,19 @@
   <script>
     (() => {
       'use strict';
-      
       const KEY = 'cartes-deck-v3';
       const DEFAULT_DESC = "Un mot précieux de notre vocabulaire de tous les jours.";
-      
+
       function uid() {
         return Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
       }
-      
-      let state = { cards: [] };
+      let state = {
+        cards: []
+      };
       let queue = [];
       let flipped = false;
       let animating = false;
       let hideExamples = false;
-
       // Cute context descriptions mapping IMG_6975.jpeg
       const cuteExplorations = {
         'à gauche': "Quand tu tournes du côté de ton cœur, là où la montre ne tourne pas.",
@@ -547,44 +578,118 @@
         'valoir la peine': "Un effort qui coûte un peu mais qui apporte tellement de bonheur à la fin.",
         'il s’agit de': "Le sujet principal du jeu, le but secret qu'on doit découvrir ensemble."
       };
-
-      const seed = [
-        { fr: 'à gauche', en: 'to the left' },
-        { fr: 'à droite', en: 'to the right' },
-        { fr: 'tout droit', en: 'straight ahead' },
-        { fr: 'en face de', en: 'across from' },
-        { fr: 'à côté de', en: 'next to' },
-        { fr: 'au coin de', en: 'at the corner of' },
-        { fr: 'au bout de', en: 'at the end of' },
-        { fr: 'vers', en: 'towards' },
-        { fr: 'au-dessus de', en: 'above' },
-        { fr: 'au-dessous de', en: 'below' },
-        { fr: 'traverser', en: 'to cross' },
-        { fr: 'faire demi-tour', en: 'to turn around' },
-        { fr: 'fier / fière', en: 'proud' },
-        { fr: 'déçu(e)', en: 'disappointed' },
-        { fr: 'inquiet / inquiète', en: 'worried' },
-        { fr: 'soulagé(e)', en: 'relieved' },
-        { fr: 'gêné(e)', en: 'embarrassed' },
-        { fr: 'épuisé(e)', en: 'exhausted' },
-        { fr: 'agacé(e)', en: 'annoyed' },
-        { fr: 'ravi(e)', en: 'delighted' },
-        { fr: 'bouleversé(e)', en: 'deeply upset' },
-        { fr: 'méfiant(e)', en: 'suspicious' },
-        { fr: 'avoir hâte de', en: 'to look forward to' },
-        { fr: 'en avoir marre de', en: 'to be fed up with' }
+      const seed = [{
+          fr: 'à gauche',
+          en: 'to the left'
+        },
+        {
+          fr: 'à droite',
+          en: 'to the right'
+        },
+        {
+          fr: 'tout droit',
+          en: 'straight ahead'
+        },
+        {
+          fr: 'en face de',
+          en: 'across from'
+        },
+        {
+          fr: 'à côté de',
+          en: 'next to'
+        },
+        {
+          fr: 'au coin de',
+          en: 'at the corner of'
+        },
+        {
+          fr: 'au bout de',
+          en: 'at the end of'
+        },
+        {
+          fr: 'vers',
+          en: 'towards'
+        },
+        {
+          fr: 'au-dessus de',
+          en: 'above'
+        },
+        {
+          fr: 'au-dessous de',
+          en: 'below'
+        },
+        {
+          fr: 'traverser',
+          en: 'to cross'
+        },
+        {
+          fr: 'faire demi-tour',
+          en: 'to turn around'
+        },
+        {
+          fr: 'fier / fière',
+          en: 'proud'
+        },
+        {
+          fr: 'déçu(e)',
+          en: 'disappointed'
+        },
+        {
+          fr: 'inquiet / inquiète',
+          en: 'worried'
+        },
+        {
+          fr: 'soulagé(e)',
+          en: 'relieved'
+        },
+        {
+          fr: 'gêné(e)',
+          en: 'embarrassed'
+        },
+        {
+          fr: 'épuisé(e)',
+          en: 'exhausted'
+        },
+        {
+          fr: 'agacé(e)',
+          en: 'annoyed'
+        },
+        {
+          fr: 'ravi(e)',
+          en: 'delighted'
+        },
+        {
+          fr: 'bouleversé(e)',
+          en: 'deeply upset'
+        },
+        {
+          fr: 'méfiant(e)',
+          en: 'suspicious'
+        },
+        {
+          fr: 'avoir hâte de',
+          en: 'to look forward to'
+        },
+        {
+          fr: 'en avoir marre de',
+          en: 'to be fed up with'
+        }
       ];
-
       const THEMES = ['blue', 'orange', 'sage', 'rose'];
       const SHAPES = ['shape-1', 'shape-2', 'shape-3', 'shape-4'];
-
       const memoryStorage = {
         _data: {},
-        get: function(k) { return Promise.resolve({ value: this._data[k] || null }); },
-        set: function(k, v) { this._data[k] = v; return Promise.resolve(); }
+        get: function(k) {
+          return Promise.resolve({
+            value: this._data[k] || null
+          });
+        },
+        set: function(k, v) {
+          this._data[k] = v;
+          return Promise.resolve();
+        }
       };
       const getStorage = () => window.storage || memoryStorage;
-
       async function load() {
         try {
           const res = await getStorage().get(KEY);
@@ -594,11 +699,9 @@
         } catch (e) {
           console.warn('Fallback storage initiated');
         }
-
         state.cards.forEach(c => {
           if (!c.desc) c.desc = cuteExplorations[c.fr] || DEFAULT_DESC;
         });
-
         const have = new Set(state.cards.map(c => c.fr.trim().toLowerCase()));
         let added = false;
         seed.forEach(s => {
@@ -615,8 +718,8 @@
         });
         if (added) persist();
       }
-
       let saveTimer = null;
+
       function persist() {
         clearTimeout(saveTimer);
         saveTimer = setTimeout(async () => {
@@ -627,7 +730,6 @@
           }
         }, 250);
       }
-
       const $ = id => document.getElementById(id);
       const deckEl = $('deck');
 
@@ -652,11 +754,9 @@
           t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-8 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-4 opacity-0 pointer-events-none";
         }, 1800);
       }
-
       /* ---------- STREAMING_CHUNK: Managing card shuffler queue lists ... ---------- */
       function rebuildQueue() {
         queue = learning().map(c => c.id);
-        
         for (let i = queue.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [queue[i], queue[j]] = [queue[j], queue[i]];
@@ -683,23 +783,19 @@
       function renderDeck(initial) {
         flipped = false;
         updateProgress();
-
         if (state.cards.length === 0) {
           deckEl.innerHTML = emptyHTML('☁︎', 'Aucune carte', 'Commencez à bâtir votre vocabulaire en ajoutant une carte.', 'goManage', 'Ajouter des cartes');
           hookEmpty();
           toggleActions(false);
           return;
         }
-
         if (queue.length === 0) {
           deckEl.innerHTML = emptyHTML('✿', 'Tout est acquis !', 'Vous avez maîtrisé toutes vos cartes.', 'restart', 'Réviser à nouveau');
           hookEmpty();
           toggleActions(false);
           return;
         }
-
         toggleActions(true);
-
         if (initial) {
           deckEl.innerHTML = '';
           const slice = queue.slice(0, 3);
@@ -753,9 +849,7 @@
       function buildCard(c) {
         const el = document.createElement('div');
         el.dataset.id = c.id;
-
         const visuals = getCardVisuals(c.id);
-
         el.innerHTML = `
           <div class="stamp acquis">acquis</div>
           <div class="stamp revoir">à revoir</div>
@@ -789,18 +883,19 @@
           '>': '&gt;',
           '"': '&quot;',
           "'": '&#39;'
-        }[m]));
+        } [m]));
       }
-
       /* ---------- STREAMING_CHUNK: Binding pointer gestures for card flyoffs ... ---------- */
       function attachDrag(el) {
         if (!el) return;
-        let startX = 0, startY = 0, dx = 0, dy = 0;
-        let dragging = false, moved = false;
-
+        let startX = 0,
+          startY = 0,
+          dx = 0,
+          dy = 0;
+        let dragging = false,
+          moved = false;
         const stampA = el.querySelector('.stamp.acquis');
         const stampR = el.querySelector('.stamp.revoir');
-
         const down = e => {
           if (animating) return;
           dragging = true;
@@ -810,17 +905,13 @@
           el.setPointerCapture(e.pointerId);
           el.style.transition = 'none';
         };
-
         const move = e => {
           if (!dragging) return;
           dx = e.clientX - startX;
           dy = e.clientY - startY;
-
           if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
-
           const rot = dx * 0.05;
           el.style.transform = `translate(${dx}px, ${dy * 0.3}px) rotate(${rot}deg)`;
-          
           const progress = Math.min(Math.abs(dx) / 100, 1);
           if (dx > 0) {
             stampA.style.opacity = progress;
@@ -830,11 +921,9 @@
             stampA.style.opacity = 0;
           }
         };
-
         const up = () => {
           if (!dragging) return;
           dragging = false;
-
           const threshold = Math.min(deckEl.offsetWidth * 0.32, 110);
           if (dx > threshold) {
             fly(el, 'right');
@@ -847,9 +936,9 @@
             stampR.style.opacity = 0;
             if (!moved) flipCard(el);
           }
-          dx = 0; dy = 0;
+          dx = 0;
+          dy = 0;
         };
-
         el.addEventListener('pointerdown', down);
         el.addEventListener('pointermove', move);
         el.addEventListener('pointerup', up);
@@ -866,17 +955,14 @@
       function fly(el, dir) {
         if (animating) return;
         animating = true;
-
         el.querySelector('.stamp.' + (dir === 'right' ? 'acquis' : 'revoir')).style.opacity = 1;
         el.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s';
-        
         if (dir === 'right') {
           el.style.transform = 'translate(180vw, -10dvh) rotate(32deg)';
         } else {
           el.style.transform = 'translate(-180vw, -10dvh) rotate(-32deg)';
         }
         el.style.opacity = '0';
-        
         const id = el.dataset.id;
         if (dir === 'right') {
           const c = cardById(id);
@@ -889,26 +975,21 @@
           queue = queue.filter(q => q !== id);
           queue.push(id);
         }
-
         updateProgress();
-
         const cardsInDom = Array.from(deckEl.querySelectorAll('.fcard'));
         const cardB = cardsInDom[cardsInDom.length - 2];
         const cardC = cardsInDom[cardsInDom.length - 3];
-
         if (cardB) {
           cardB.className = 'fcard absolute inset-0 rounded-[32px] z-20';
           cardB.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s';
           cardB.style.opacity = '';
           attachDrag(cardB);
         }
-        
         if (cardC) {
           cardC.className = 'fcard absolute inset-0 rounded-[32px] behind';
           cardC.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s';
           cardC.style.opacity = '';
         }
-
         const nextSlice = queue.slice(0, 3);
         if (nextSlice.length >= 3) {
           const newCardId = nextSlice[2];
@@ -919,18 +1000,15 @@
             deckEl.insertBefore(newEl, deckEl.firstChild);
           }
         }
-
         setTimeout(() => {
           el.remove();
           animating = false;
           flipped = false;
-          
           if (queue.length === 0 || state.cards.length === 0) {
             renderDeck(true);
           }
         }, 300);
       }
-
       /* ---------- STREAMING_CHUNK: Binding button events and form handlers... ---------- */
       function buttonSwipe(dir) {
         const el = deckEl.lastElementChild;
@@ -938,15 +1016,12 @@
         el.style.transform = `translate(${dir === 'right' ? 30 : -30}px, -4px) rotate(${dir === 'right' ? 3 : -3}deg)`;
         requestAnimationFrame(() => fly(el, dir));
       }
-
       $('btnRight').addEventListener('click', () => buttonSwipe('right'));
       $('btnLeft').addEventListener('click', () => buttonSwipe('left'));
       $('btnFlip').addEventListener('click', () => flipCard());
-
       $('btnToggleExamples').addEventListener('click', () => {
         hideExamples = !hideExamples;
         deckEl.classList.toggle('hide-examples', hideExamples);
-        
         const eyeIcon = $('eyeIcon');
         if (hideExamples) {
           eyeIcon.innerHTML = `
@@ -961,7 +1036,6 @@
           toast('Exemples affichés');
         }
       });
-
       document.addEventListener('keydown', e => {
         if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowRight') buttonSwipe('right');
@@ -971,23 +1045,19 @@
           flipCard();
         }
       });
-
       const inFr = $('inFr'),
-            inEn = $('inEn'),
-            inDesc = $('inDesc'),
-            btnAdd = $('btnAdd');
+        inEn = $('inEn'),
+        inDesc = $('inDesc'),
+        btnAdd = $('btnAdd');
 
       function validate() {
         btnAdd.disabled = !(inFr.value.trim() && inEn.value.trim());
       }
-
       inFr.addEventListener('input', validate);
       inEn.addEventListener('input', validate);
-
       [inFr, inEn, inDesc].forEach(i => i.addEventListener('keydown', e => {
         if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !btnAdd.disabled) addCard();
       }));
-
       btnAdd.addEventListener('click', addCard);
 
       function addCard() {
@@ -1001,25 +1071,20 @@
         state.cards.unshift(c);
         queue.unshift(c.id);
         persist();
-
         inFr.value = '';
         inEn.value = '';
         inDesc.value = '';
         validate();
         inFr.focus();
-
         updateProgress();
-
         if (deckEl.querySelector('.empty')) renderDeck(true);
         toast('Carte ajoutée !');
       }
 
       function switchTab(which) {
         const study = which === 'study';
-        
         $('tabStudy').className = `px-5 py-1.5 text-xs font-semibold rounded-full transition-all ${study ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'}`;
         $('tabManage').className = `px-5 py-1.5 text-xs font-semibold rounded-full transition-all ${!study ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'}`;
-        
         if (study) {
           $('viewStudy').classList.add('flex');
           $('viewStudy').classList.remove('hidden');
@@ -1032,10 +1097,8 @@
           $('viewManage').classList.add('flex');
         }
       }
-      
       $('tabStudy').addEventListener('click', () => switchTab('study'));
       $('tabManage').addEventListener('click', () => switchTab('manage'));
-
       load().then(() => {
         rebuildQueue();
         renderDeck(true);
