@@ -1,799 +1,1047 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>Cartes · French Flashcards</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --paper:#F6F4EF;
-  --card:#FFFFFF;
-  --ink:#33303B;
-  --ink-soft:#8A8694;
-  --ink-faint:#C6C2CE;
-  --sage:#7FA98C;
-  --sage-soft:#E3EEE6;
-  --rose:#C98A90;
-  --rose-soft:#F5E5E7;
-  --blue:#8FA3C8;
-  --blue-soft:#E7ECF5;
-  --shadow: 0 1px 2px rgba(51,48,59,.05), 0 8px 24px rgba(51,48,59,.08);
-  --shadow-lift: 0 2px 4px rgba(51,48,59,.06), 0 18px 44px rgba(51,48,59,.14);
-  --r-lg:24px;
-  --r-md:16px;
-  --r-sm:12px;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{
-  font-family:'Outfit',sans-serif;
-  background:var(--paper);
-  color:var(--ink);
-  overflow:hidden;
-  overscroll-behavior:none;
-  -webkit-font-smoothing:antialiased;
-}
-#app{
-  height:100dvh;
-  max-width:480px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  padding:max(16px, env(safe-area-inset-top)) 20px max(16px, env(safe-area-inset-bottom));
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>Cartes · Minimalist French Flashcards</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['Fraunces', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
 
-/* ---------- header ---------- */
-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 2px 16px;
-  flex:0 0 auto;
-}
-.brand{font-family:'Fraunces',serif;font-weight:600;font-size:22px;letter-spacing:-.01em}
-.brand em{font-style:italic;color:var(--blue)}
-.tabs{display:flex;gap:4px;background:rgba(51,48,59,.06);border-radius:999px;padding:4px}
-.tab{
-  border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:500;
-  color:var(--ink-soft);padding:7px 14px;border-radius:999px;cursor:pointer;
-  transition:color .2s, background .2s, box-shadow .2s;
-}
-.tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(51,48,59,.12)}
-.tab:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  <style>
+    :root {
+      /* Warm Linen / Cream Background (Gentle on the Eyes) */
+      --app-bg: #F2ECE4;
+      --paper: #FAF8F4;
+      --ink: #2C2830;
+      --ink-soft: #635E6A;
+      --ink-faint: #BAB4C1;
+      
+      /* Pure themed card backgrounds */
+      --theme-blue-bg: #4C599E;
+      --theme-blue-blob: rgba(255, 255, 255, 0.18);
+      
+      --theme-orange-bg: #F3D086;
+      --theme-orange-blob: rgba(255, 255, 255, 0.22);
+      
+      --theme-sage-bg: #87A691;
+      --theme-sage-blob: rgba(255, 255, 255, 0.2);
+      
+      --theme-rose-bg: #D48A93;
+      --theme-rose-blob: rgba(255, 255, 255, 0.22);
 
-/* ---------- views ---------- */
-.view{flex:1;display:none;flex-direction:column;min-height:0;animation:viewIn .32s cubic-bezier(.22,1,.36,1)}
-.view.active{display:flex}
-@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+      --shadow-sm: 0 4px 12px rgba(44, 40, 48, 0.05);
+      --shadow-md: 0 12px 36px rgba(44, 40, 48, 0.12);
+      --shadow-lift: 0 24px 50px rgba(44, 40, 48, 0.18);
+    }
 
-/* ---------- progress ---------- */
-.progress{flex:0 0 auto;margin-bottom:14px}
-.progress-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:var(--ink-soft);margin-bottom:8px}
-.progress-meta b{color:var(--sage);font-weight:600}
-.bar{height:4px;background:rgba(51,48,59,.08);border-radius:99px;overflow:hidden}
-.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--sage));border-radius:99px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+    body {
+      background-color: var(--app-bg);
+      color: var(--ink);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease;
+    }
 
-/* ---------- category pills ---------- */
-.cat-pills{
-  flex:0 0 auto;display:flex;gap:6px;overflow-x:auto;
-  margin:0 -20px 14px;padding:2px 20px 6px;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-}
-.cat-pills::-webkit-scrollbar{display:none}
-.pill{
-  flex:0 0 auto;border:none;cursor:pointer;font-family:inherit;
-  font-size:12px;font-weight:500;color:var(--ink-soft);
-  background:var(--card);border-radius:99px;padding:7px 13px;
-  box-shadow:0 1px 2px rgba(51,48,59,.05);
-  transition:background .2s, color .2s, transform .15s;
-  white-space:nowrap;
-}
-.pill:active{transform:scale(.95)}
-.pill.active{background:var(--ink);color:var(--paper)}
-.pill .n{opacity:.55;font-size:11px;margin-left:4px}
+    /* Prevent text selection during swipe gesture physics */
+    .fcard {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      perspective: 1500px;
+    }
 
-/* category tag on card */
-.cat-tag{
-  font-size:11px;font-weight:500;color:var(--ink-faint);
-  letter-spacing:.06em;text-transform:uppercase;
-  position:absolute;top:22px;left:0;right:0;text-align:center;
-}
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-/* list section headers */
-.sec-head{
-  display:flex;align-items:baseline;justify-content:space-between;
-  padding:14px 4px 6px;position:sticky;top:0;background:var(--paper);z-index:2;
-}
-.sec-head:first-child{padding-top:2px}
-.sec-head h4{
-  font-family:'Fraunces',serif;font-weight:500;font-style:italic;
-  font-size:15px;color:var(--ink);
-}
-.sec-head span{font-size:11px;color:var(--ink-faint)}
+    .fcard.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
 
-/* ---------- deck ---------- */
-.deck{flex:1;position:relative;min-height:0;touch-action:none}
-.fcard{
-  position:absolute;inset:0;
-  border-radius:var(--r-lg);
-  background:var(--card);
-  box-shadow:var(--shadow);
-  display:flex;align-items:center;justify-content:center;
-  will-change:transform;
-  cursor:grab;
-  user-select:none;-webkit-user-select:none;
-}
-.fcard.dragging{cursor:grabbing;box-shadow:var(--shadow-lift)}
-.fcard.behind{transform:scale(.94) translateY(14px);opacity:.6;pointer-events:none;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s}
-.fcard.behind2{transform:scale(.88) translateY(28px);opacity:.25;pointer-events:none;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s}
-.fcard.entering{animation:cardEnter .4s cubic-bezier(.22,1,.36,1)}
-@keyframes cardEnter{from{transform:scale(.94) translateY(14px);opacity:.6}to{transform:none;opacity:1}}
-.fcard.fly-right{transition:transform .45s cubic-bezier(.3,.7,.4,1),opacity .4s;transform:translate(130vw,-8vh) rotate(24deg)!important;opacity:0}
-.fcard.fly-left{transition:transform .45s cubic-bezier(.3,.7,.4,1),opacity .4s;transform:translate(-130vw,-8vh) rotate(-24deg)!important;opacity:0}
+    .face {
+      position: absolute;
+      inset: 0;
+      border-radius: 32px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
 
-.card-inner{
-  width:100%;height:100%;position:relative;
-  transform-style:preserve-3d;
-  transition:transform .5s cubic-bezier(.22,1,.36,1);
-}
-.fcard.flipped .card-inner{transform:rotateY(180deg)}
-.face{
-  position:absolute;inset:0;border-radius:var(--r-lg);
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:32px;text-align:center;gap:14px;
-}
-.face.back{transform:rotateY(180deg);background:var(--card);border-radius:var(--r-lg)}
-.lang-chip{
-  font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  padding:5px 12px;border-radius:99px;
-}
-.face.front .lang-chip{background:var(--blue-soft);color:#5F779F}
-.face.back .lang-chip{background:var(--sage-soft);color:#5B8268}
-.word{
-  font-family:'Fraunces',serif;font-weight:500;
-  font-size:clamp(30px,9vw,44px);line-height:1.15;letter-spacing:-.015em;
-  overflow-wrap:anywhere;
-}
-.tap-hint{font-size:12px;color:var(--ink-faint);font-weight:400;position:absolute;bottom:24px}
+    /* Completely opaque faces to solve transparency bug */
+    .face.front {
+      background-color: var(--paper);
+      transform: rotateY(0deg);
+      border: 8px solid #FFFFFF;
+      z-index: 2;
+    }
 
-/* stamps */
-.stamp{
-  position:absolute;top:26px;
-  font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:24px;
-  padding:6px 16px;border-radius:10px;border:2.5px solid;
-  opacity:0;transform:rotate(-12deg) scale(.9);
-  transition:opacity .12s;
-  pointer-events:none;z-index:5;
-}
-.stamp.acquis{right:22px;color:var(--sage);border-color:var(--sage);background:var(--sage-soft)}
-.stamp.revoir{left:22px;color:var(--rose);border-color:var(--rose);background:var(--rose-soft);transform:rotate(12deg) scale(.9)}
+    .face.back {
+      transform: rotateY(180deg);
+      z-index: 1;
+    }
 
-/* ---------- action buttons ---------- */
-.actions{flex:0 0 auto;display:flex;justify-content:center;align-items:center;gap:18px;padding:20px 0 4px}
-.act{
-  border:none;cursor:pointer;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s;
-  box-shadow:var(--shadow);
-  background:var(--card);
-}
-.act:active{transform:scale(.88)}
-.act:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.act.big{width:62px;height:62px}
-.act.small{width:46px;height:46px}
-.act svg{display:block}
-.act-hint{font-size:11px;color:var(--ink-faint);text-align:center;margin-top:10px;flex:0 0 auto}
+    /* Wavy grid vectors replicating IMG_6975.jpeg */
+    .grid-blue {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23D4E2F0' stroke-width='1.2'/></svg>");
+    }
+    .grid-orange {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 11 18 10 T 36 10' fill='none' stroke='%23FCEFD9' stroke-width='1.2'/><path d='M 10 0 Q 11 9 10 18 T 10 36' fill='none' stroke='%23FCEFD9' stroke-width='1.2'/></svg>");
+    }
+    .grid-sage {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 9 18 10 T 36 10' fill='none' stroke='%23E1EBE4' stroke-width='1.2'/><path d='M 10 0 Q 9 9 10 18 T 10 36' fill='none' stroke='%23E1EBE4' stroke-width='1.2'/></svg>");
+    }
+    .grid-rose {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M 0 10 Q 9 8 18 10 T 36 10' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/><path d='M 10 0 Q 8 9 10 18 T 10 36' fill='none' stroke='%23F7E5E8' stroke-width='1.2'/></svg>");
+    }
 
-/* ---------- empty / done states ---------- */
-.empty{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;gap:12px;padding:24px;
-}
-.empty .glyph{font-family:'Fraunces',serif;font-style:italic;font-size:56px;color:var(--ink-faint);line-height:1}
-.empty h2{font-family:'Fraunces',serif;font-weight:500;font-size:24px}
-.empty p{font-size:14px;color:var(--ink-soft);max-width:260px;line-height:1.5}
-.btn{
-  font-family:inherit;font-size:14px;font-weight:500;
-  border:none;cursor:pointer;border-radius:99px;padding:12px 24px;
-  background:var(--ink);color:var(--paper);
-  transition:transform .18s, opacity .18s;
-  margin-top:6px;
-}
-.btn:active{transform:scale(.95)}
-.btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--ink-faint)}
+    /* Hand-drawn circular spotlight (No dashed lines and perfectly matches the rest of the card background) */
+    .spotlight {
+      width: 90%;
+      height: 82%;
+      background: var(--paper); /* Matches the front card background exactly */
+      border-radius: 48% 52% 47% 53% / 51% 48% 52% 49%;
+      border: none; /* Removed the dashed outline completely */
+      box-shadow: inset 0 2px 8px rgba(44, 40, 48, 0.02), var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      gap: 16px;
+      position: relative;
+    }
 
-/* ---------- manage view ---------- */
-.add-form{flex:0 0 auto;display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
-.field-row{display:flex;gap:10px}
-.field{flex:1;position:relative}
-.field input{
-  width:100%;font-family:inherit;font-size:15px;color:var(--ink);
-  background:var(--card);border:1px solid transparent;border-radius:var(--r-md);
-  padding:14px 16px;box-shadow:0 1px 2px rgba(51,48,59,.05);
-  transition:border-color .2s, box-shadow .2s;
-}
-.field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
-.field input::placeholder{color:var(--ink-faint)}
-.add-btn{
-  font-family:inherit;font-size:14px;font-weight:500;border:none;cursor:pointer;
-  background:var(--ink);color:var(--paper);border-radius:var(--r-md);padding:13px;
-  transition:transform .15s, opacity .2s;
-}
-.add-btn:disabled{opacity:.35;cursor:default}
-.add-btn:not(:disabled):active{transform:scale(.97)}
+    /* Painted tape banner style for the French word (Straightened) */
+    .word-banner {
+      padding: 8px 24px;
+      border-radius: 12px;
+      color: #FFFFFF;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transform: none; /* Completely straightened */
+      max-width: 92%;
+      word-wrap: break-word;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.list-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.list-head h3{font-family:'Fraunces',serif;font-weight:500;font-size:17px}
-.list-head span{font-size:12px;color:var(--ink-soft)}
-.card-list{flex:1;overflow-y:auto;min-height:0;display:flex;flex-direction:column;gap:8px;padding-bottom:8px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.row{
-  display:flex;align-items:center;gap:12px;
-  background:var(--card);border-radius:var(--r-md);padding:13px 14px;
-  box-shadow:0 1px 2px rgba(51,48,59,.04);
-  animation:rowIn .3s cubic-bezier(.22,1,.36,1);
-}
-@keyframes rowIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.row.removing{transition:opacity .25s, transform .25s;opacity:0;transform:translateX(24px)}
-.row .words{flex:1;min-width:0}
-.row .fr{font-family:'Fraunces',serif;font-size:16px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.row .en{font-size:13px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
-.dot.m{background:var(--sage)}
-.dot.l{background:var(--ink-faint)}
-.icon-btn{
-  border:none;background:transparent;cursor:pointer;padding:8px;border-radius:10px;
-  color:var(--ink-faint);transition:color .2s, background .2s;flex:0 0 auto;
-}
-.icon-btn:hover,.icon-btn:active{color:var(--rose);background:var(--rose-soft)}
-.icon-btn.reset:hover,.icon-btn.reset:active{color:var(--blue);background:var(--blue-soft)}
+    /* Theme backgrounds for card back colors */
+    .theme-blue { background-color: var(--theme-blue-bg); }
+    .theme-orange { background-color: var(--theme-orange-bg); }
+    .theme-sage { background-color: var(--theme-sage-bg); }
+    .theme-rose { background-color: var(--theme-rose-bg); }
 
-/* toast */
-.toast{
-  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
-  transform:translateX(-50%) translateY(12px);
-  background:var(--ink);color:var(--paper);font-size:13px;font-weight:500;
-  padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;
-  transition:opacity .25s, transform .25s cubic-bezier(.22,1,.36,1);z-index:99;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    /* Animated, morphing organic geometric shape backgrounds */
+    .geo-shape {
+      width: 190px;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      animation: morphingBlob 10s ease-in-out infinite alternate;
+    }
 
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-}
-</style>
+    .geo-shape.shape-1 {
+      border-radius: 54% 46% 62% 38% / 44% 56% 44% 56%;
+      background: var(--theme-blue-blob);
+    }
+    .geo-shape.shape-2 {
+      border-radius: 38% 62% 42% 58% / 52% 38% 62% 48%;
+      background: var(--theme-orange-blob);
+    }
+    .geo-shape.shape-3 {
+      border-radius: 48% 52% 32% 68% / 42% 68% 32% 58%;
+      background: var(--theme-sage-blob);
+    }
+    .geo-shape.shape-4 {
+      border-radius: 62% 38% 48% 52% / 58% 32% 68% 42%;
+      background: var(--theme-rose-blob);
+    }
+
+    @keyframes morphingBlob {
+      0% { transform: scale(1) rotate(0deg); }
+      100% { transform: scale(1.06) rotate(12deg); }
+    }
+
+    .fcard.behind {
+      transform: scale(0.95) translateY(14px) rotate(-1deg);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 10;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+    }
+
+    .fcard.behind2 {
+      transform: scale(0.9) translateY(28px) rotate(1deg);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 5;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+    }
+
+    .fcard.entering {
+      animation: cardEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes cardEnter {
+      from { transform: scale(0.92) translateY(20px); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+
+    /* Complete opacity guard to prevent content of background cards from bleeding/peeking through */
+    .fcard.behind .spotlight,
+    .fcard.behind .geo-shape,
+    .fcard.behind2 .spotlight,
+    .fcard.behind2 .geo-shape {
+      opacity: 0 !important;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Instantly fade back in when promoted to the front active card */
+    .fcard:not(.behind):not(.behind2) .spotlight,
+    .fcard:not(.behind):not(.behind2) .geo-shape {
+      opacity: 1 !important;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Hide Illustrative examples when the minimal eye toggle class is active */
+    .hide-examples .illustration-text {
+      display: none !important;
+    }
+    
+    .hide-examples .spotlight {
+      gap: 0px !important;
+    }
+
+    /* Ultra-minimalist and simple modern swipe indicators */
+    .stamp {
+      position: absolute;
+      top: 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 99px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.1s ease;
+    }
+    .stamp.acquis {
+      right: 24px;
+      color: #1E4620;
+      background-color: #E2F3E5;
+      transform: none;
+    }
+    .stamp.revoir {
+      left: 24px;
+      color: #611D24;
+      background-color: #FCE8E9;
+      transform: none;
+    }
+
+    /* ---------- Premium Tactile Minimalist Buttons ---------- */
+    .tactile-btn {
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 10px rgba(44, 40, 48, 0.04), 0 2px 4px rgba(44, 40, 48, 0.02);
+      background-color: #FFFFFF;
+    }
+
+    .tactile-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(44, 40, 48, 0.07);
+    }
+
+    .tactile-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(44, 40, 48, 0.03);
+    }
+
+    .btn-revoir {
+      background-color: #FDF4F5;
+      color: #D48A93;
+      border: 1.5px solid rgba(212, 138, 147, 0.18);
+    }
+    .btn-revoir:hover {
+      background-color: #FCE8E9;
+    }
+
+    .btn-flip {
+      background-color: #FFFFFF;
+      color: #635E6A;
+      border: 1.5px solid rgba(99, 94, 106, 0.12);
+    }
+    .btn-flip:hover {
+      background-color: #FAF8F4;
+    }
+
+    .btn-acquis {
+      background-color: #F1F7F3;
+      color: #87A691;
+      border: 1.5px solid rgba(135, 166, 145, 0.18);
+    }
+    .btn-acquis:hover {
+      background-color: #E2F3E5;
+    }
+  </style>
 </head>
-<body>
-<div id="app">
-  <header>
-    <div class="brand">Car<em>tes</em></div>
-    <nav class="tabs" role="tablist">
-      <button class="tab active" id="tabStudy" role="tab">Étudier</button>
-      <button class="tab" id="tabManage" role="tab">Cartes</button>
+
+<body class="h-dvh w-screen flex flex-col items-center justify-between p-4 md:p-6 select-none overflow-hidden">
+
+  <!-- ---------- STREAMING_CHUNK: Structuring page layouts and headers... ---------- -->
+  <header class="w-full max-w-[380px] md:max-w-[850px] flex items-center justify-between py-2 z-20 shrink-0">
+    <div class="brand font-serif font-semibold text-2xl text-slate-800 tracking-tight flex items-center gap-2">
+      Car<em>tes</em>
+      <span class="w-2 h-2 rounded-full bg-[#E38379]"></span>
+    </div>
+    
+    <nav class="tabs flex bg-slate-200/50 p-1 rounded-full border border-slate-300/30 backdrop-blur-sm">
+      <button id="tabStudy" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 active bg-white !text-slate-800 shadow-sm">Étudier</button>
+      <button id="tabManage" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-500">Ajouter</button>
     </nav>
   </header>
 
-  <!-- STUDY VIEW -->
-  <section class="view active" id="viewStudy">
-    <div class="progress" id="progressWrap">
-      <div class="progress-meta">
-        <span id="deckCount">0 to review</span>
-        <span><b id="masteredCount">0</b> mastered</span>
+  <!-- Main view wrapper allowing full viewport bleed for swipes -->
+  <main class="w-full max-w-[380px] md:max-w-[850px] flex-grow flex flex-col justify-center overflow-visible py-2">
+    
+    <!-- VIEW STUDY: Pure minimalist card viewport with enabled overflow so cards slide out completely -->
+    <section id="viewStudy" class="w-full h-full flex flex-col justify-between overflow-visible">
+      
+      <!-- Minimalist Progress Tracker & Eye Toggle Container -->
+      <div class="w-full flex justify-between items-center px-2 shrink-0 mb-4 text-slate-500 text-xs font-semibold relative">
+        <span id="deckCount" class="w-1/4 text-left">0 restants</span>
+        
+        <!-- Minimal Eye Toggle Button (Safely aligned in the horizontal flex stream, never overlapping) -->
+        <button id="btnToggleExamples" aria-label="Masquer les exemples" class="w-8 h-8 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-slate-300/30 flex items-center justify-center text-slate-500 transition-all hover:bg-white hover:scale-105 active:scale-95">
+          <!-- Eye Icon (visible by default) -->
+          <svg id="eyeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+
+        <span id="masteredCount" class="w-1/4 text-right">0 acquis</span>
       </div>
-      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-    </div>
-    <div class="cat-pills" id="catPills"></div>
-    <div class="deck" id="deck"></div>
-    <div class="actions" id="actions">
-      <button class="act big" id="btnLeft" aria-label="Still learning">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C98A90" stroke-width="2.2" stroke-linecap="round"><path d="M1 4v6h6"/><path d="M3.5 15a9 9 0 1 0 2-9.7L1 10"/></svg>
-      </button>
-      <button class="act small" id="btnFlip" aria-label="Flip card">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8FA3C8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
-      </button>
-      <button class="act big" id="btnRight" aria-label="Mastered">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7FA98C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    </div>
-    <div class="act-hint">swipe right = acquis · swipe left = à revoir · tap card to flip</div>
-  </section>
 
-  <!-- MANAGE VIEW -->
-  <section class="view" id="viewManage">
-    <div class="add-form">
-      <div class="field-row">
-        <div class="field"><input id="inFr" placeholder="Mot en français" autocomplete="off" autocapitalize="off"></div>
-        <div class="field"><input id="inEn" placeholder="English word" autocomplete="off" autocapitalize="off"></div>
+      <!-- Main Deck Canvas Area - strictly capped at compact card size so it never stretches on widescreen -->
+      <div class="relative w-full max-w-[310px] md:max-w-[330px] aspect-[3/4] flex-grow mx-auto my-3 overflow-visible">
+        <div id="deck" class="relative w-full h-full overflow-visible">
+          <!-- Dynamic card injections -->
+        </div>
       </div>
-      <div class="field"><input id="inCat" placeholder="Section (ex. Émotions) · optional" autocomplete="off" list="catOptions"><datalist id="catOptions"></datalist></div>
-      <button class="add-btn" id="btnAdd" disabled>Add card</button>
-    </div>
-    <div class="list-head">
-      <h3>Your cards</h3>
-      <span id="listCount"></span>
-    </div>
-    <div class="card-list" id="cardList"></div>
-  </section>
-</div>
-<div class="toast" id="toast"></div>
 
-<script>
-(() => {
-'use strict';
-const KEY = 'cartes-deck-v1';
-let state = { cards: [] };
-let queue = [];           // ids still to review this session
-let flipped = false;
-let animating = false;
+      <!-- Tactical UI Controls underneath cards -->
+      <div class="shrink-0 flex flex-col items-center gap-3 mt-4">
+        <div id="actions" class="flex justify-center items-center gap-6">
+          <!-- Revoir Trigger -->
+          <button id="btnLeft" aria-label="À revoir" class="tactile-btn btn-revoir w-[52px] h-[52px]">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M1 4v6h6" />
+              <path d="M3.5 15a9 9 0 1 0 2-9.7L1 10" />
+            </svg>
+          </button>
+          
+          <!-- Rotate / Flip Trigger -->
+          <button id="btnFlip" aria-label="Retourner la carte" class="tactile-btn btn-flip w-[42px] h-[42px]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 2l4 4-4 4" />
+              <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+              <path d="M7 22l-4-4 4-4" />
+              <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+            </svg>
+          </button>
+          
+          <!-- Acquis Trigger -->
+          <button id="btnRight" aria-label="Acquis" class="tactile-btn btn-acquis w-[52px] h-[52px]">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+          </button>
+        </div>
 
-const seed = [
-  // Directions
-  {cat:'Directions', fr:'à gauche', en:'to the left'},
-  {cat:'Directions', fr:'à droite', en:'to the right'},
-  {cat:'Directions', fr:'tout droit', en:'straight ahead'},
-  {cat:'Directions', fr:'en face de', en:'across from / facing'},
-  {cat:'Directions', fr:'à côté de', en:'next to'},
-  {cat:'Directions', fr:'au coin de', en:'at the corner of'},
-  {cat:'Directions', fr:'au bout de', en:'at the end of'},
-  {cat:'Directions', fr:'vers', en:'towards'},
-  {cat:'Directions', fr:'au-dessus de', en:'above'},
-  {cat:'Directions', fr:'au-dessous de', en:'below'},
-  {cat:'Directions', fr:'traverser', en:'to cross'},
-  {cat:'Directions', fr:'faire demi-tour', en:'to turn around'},
-  // Émotions
-  {cat:'Émotions', fr:'fier / fière', en:'proud'},
-  {cat:'Émotions', fr:'déçu(e)', en:'disappointed'},
-  {cat:'Émotions', fr:'inquiet / inquiète', en:'worried'},
-  {cat:'Émotions', fr:'soulagé(e)', en:'relieved'},
-  {cat:'Émotions', fr:'gêné(e)', en:'embarrassed'},
-  {cat:'Émotions', fr:'épuisé(e)', en:'exhausted'},
-  {cat:'Émotions', fr:'agacé(e)', en:'annoyed'},
-  {cat:'Émotions', fr:'ravi(e)', en:'delighted'},
-  {cat:'Émotions', fr:'bouleversé(e)', en:'deeply upset / shaken'},
-  {cat:'Émotions', fr:'méfiant(e)', en:'distrustful / wary'},
-  {cat:'Émotions', fr:'avoir hâte de', en:'to look forward to'},
-  {cat:'Émotions', fr:'en avoir marre de', en:'to be fed up with'},
-  // Actions quotidiennes
-  {cat:'Actions quotidiennes', fr:'se réveiller', en:'to wake up'},
-  {cat:'Actions quotidiennes', fr:'se dépêcher', en:'to hurry'},
-  {cat:'Actions quotidiennes', fr:'ranger', en:'to tidy up / put away'},
-  {cat:'Actions quotidiennes', fr:'nettoyer', en:'to clean'},
-  {cat:'Actions quotidiennes', fr:'faire la lessive', en:'to do the laundry'},
-  {cat:'Actions quotidiennes', fr:'faire les courses', en:'to do the grocery shopping'},
-  {cat:'Actions quotidiennes', fr:'nourrir', en:'to feed'},
-  {cat:'Actions quotidiennes', fr:'se détendre', en:'to relax / unwind'},
-  {cat:'Actions quotidiennes', fr:'s\u2019occuper de', en:'to take care of'},
-  {cat:'Actions quotidiennes', fr:'oublier', en:'to forget'},
-  {cat:'Actions quotidiennes', fr:'emmener', en:'to take (someone) along'},
-  {cat:'Actions quotidiennes', fr:'rapporter', en:'to bring back'},
-  // Travail & bureau
-  {cat:'Travail & bureau', fr:'la réunion', en:'the meeting'},
-  {cat:'Travail & bureau', fr:'l\u2019échéance', en:'the deadline'},
-  {cat:'Travail & bureau', fr:'le dossier', en:'the file / case'},
-  {cat:'Travail & bureau', fr:'la mise à jour', en:'the update'},
-  {cat:'Travail & bureau', fr:'le compte rendu', en:'the report / summary'},
-  {cat:'Travail & bureau', fr:'gérer', en:'to manage / handle'},
-  {cat:'Travail & bureau', fr:'transmettre', en:'to forward / pass on'},
-  {cat:'Travail & bureau', fr:'joindre', en:'to attach / to reach (someone)'},
-  {cat:'Travail & bureau', fr:'le porte-parole', en:'the spokesperson'},
-  {cat:'Travail & bureau', fr:'la demande de renseignements', en:'the inquiry / information request'},
-  {cat:'Travail & bureau', fr:'le délai', en:'the timeframe / turnaround'},
-  {cat:'Travail & bureau', fr:'accuser réception', en:'to acknowledge receipt'},
-  // Connecteurs
-  {cat:'Connecteurs', fr:'néanmoins', en:'nevertheless'},
-  {cat:'Connecteurs', fr:'bien que', en:'although (+ subjonctif)'},
-  {cat:'Connecteurs', fr:'pourtant', en:'yet / however'},
-  {cat:'Connecteurs', fr:'d\u2019ailleurs', en:'besides / by the way'},
-  {cat:'Connecteurs', fr:'en revanche', en:'on the other hand'},
-  {cat:'Connecteurs', fr:'quant à', en:'as for'},
-  {cat:'Connecteurs', fr:'afin de', en:'in order to'},
-  {cat:'Connecteurs', fr:'à condition que', en:'provided that (+ subjonctif)'},
-  {cat:'Connecteurs', fr:'dès que', en:'as soon as'},
-  {cat:'Connecteurs', fr:'tandis que', en:'whereas / while'},
-  {cat:'Connecteurs', fr:'malgré', en:'despite'},
-  {cat:'Connecteurs', fr:'dorénavant', en:'from now on'},
-  // Temps & fréquence
-  {cat:'Temps & fréquence', fr:'parfois', en:'sometimes'},
-  {cat:'Temps & fréquence', fr:'souvent', en:'often'},
-  {cat:'Temps & fréquence', fr:'rarement', en:'rarely'},
-  {cat:'Temps & fréquence', fr:'tout à l\u2019heure', en:'earlier / in a little while'},
-  {cat:'Temps & fréquence', fr:'la veille', en:'the day before'},
-  {cat:'Temps & fréquence', fr:'le lendemain', en:'the next day'},
-  {cat:'Temps & fréquence', fr:'auparavant', en:'beforehand / previously'},
-  {cat:'Temps & fréquence', fr:'désormais', en:'from now on / henceforth'},
-  {cat:'Temps & fréquence', fr:'tous les deux jours', en:'every other day'},
-  {cat:'Temps & fréquence', fr:'de temps en temps', en:'from time to time'},
-  // Maison
-  {cat:'Maison', fr:'le rez-de-chaussée', en:'the ground floor'},
-  {cat:'Maison', fr:'l\u2019étage', en:'the upper floor / storey'},
-  {cat:'Maison', fr:'le grenier', en:'the attic'},
-  {cat:'Maison', fr:'le sous-sol', en:'the basement'},
-  {cat:'Maison', fr:'la cour', en:'the yard'},
-  {cat:'Maison', fr:'le quai', en:'the dock / wharf'},
-  {cat:'Maison', fr:'la rivière', en:'the river'},
-  {cat:'Maison', fr:'le chauffage', en:'the heating'},
-  {cat:'Maison', fr:'la poussière', en:'the dust'},
-  {cat:'Maison', fr:'l\u2019aspirateur', en:'the vacuum cleaner'},
-  {cat:'Maison', fr:'déménager', en:'to move (house)'},
-  {cat:'Maison', fr:'emménager', en:'to move in'},
-  // Verbes utiles
-  {cat:'Verbes utiles', fr:'atteindre', en:'to reach / attain'},
-  {cat:'Verbes utiles', fr:'craindre', en:'to fear'},
-  {cat:'Verbes utiles', fr:'résoudre', en:'to solve / resolve'},
-  {cat:'Verbes utiles', fr:'se plaindre', en:'to complain'},
-  {cat:'Verbes utiles', fr:'convaincre', en:'to convince'},
-  {cat:'Verbes utiles', fr:'s\u2019apercevoir de', en:'to notice / realize'},
-  {cat:'Verbes utiles', fr:'se débrouiller', en:'to manage / get by'},
-  {cat:'Verbes utiles', fr:'avoir beau + inf.', en:'to do something in vain'},
-  {cat:'Verbes utiles', fr:'valoir la peine', en:'to be worth it'},
-  {cat:'Verbes utiles', fr:'il s\u2019agit de', en:'it\u2019s about / a matter of'}
-];
-const DEFAULT_CAT = 'Divers';
-
-const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
-
-/* ---------- storage (persistent, with in-memory fallback) ---------- */
-let saveTimer = null;
-async function load(){
-  try{
-    const res = await window.storage.get(KEY);
-    if(res && res.value){ state = JSON.parse(res.value); }
-  }catch(e){ /* key missing or storage unavailable */ }
-  // ensure every card has a category
-  state.cards.forEach(c => { if(!c.cat) c.cat = DEFAULT_CAT; });
-  // merge in any seed words not already present (dedupe by French word)
-  const have = new Set(state.cards.map(c => c.fr.trim().toLowerCase()));
-  let added = false;
-  seed.forEach(s => {
-    if(!have.has(s.fr.trim().toLowerCase())){
-      state.cards.push({id:uid(), fr:s.fr, en:s.en, cat:s.cat, mastered:false});
-      added = true;
-    } else {
-      // upgrade existing seed words that were uncategorized
-      const ex = state.cards.find(c => c.fr.trim().toLowerCase() === s.fr.trim().toLowerCase());
-      if(ex && ex.cat === DEFAULT_CAT){ ex.cat = s.cat; added = true; }
-    }
-  });
-  if(added) persist();
-}
-function persist(){
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    try{ await window.storage.set(KEY, JSON.stringify(state)); }
-    catch(e){ console.warn('save failed', e); }
-  }, 250);
-}
-
-/* ---------- helpers ---------- */
-const $ = id => document.getElementById(id);
-const deckEl = $('deck');
-function cardById(id){ return state.cards.find(c => c.id === id); }
-function learning(){ return state.cards.filter(c => !c.mastered); }
-function mastered(){ return state.cards.filter(c => c.mastered); }
-
-function toast(msg){
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove('show'), 1800);
-}
-
-/* ---------- categories ---------- */
-let activeCat = 'all';
-function categories(){
-  const set = new Map();
-  state.cards.forEach(c => set.set(c.cat, (set.get(c.cat) || 0) + 1));
-  return [...set.entries()].sort((a,b) => a[0].localeCompare(b[0], 'fr'));
-}
-function renderPills(){
-  const wrap = $('catPills');
-  const cats = categories();
-  if(cats.length < 2){ wrap.innerHTML = ''; return; }
-  wrap.innerHTML = '';
-  const mk = (label, val, count) => {
-    const b = document.createElement('button');
-    b.className = 'pill' + (activeCat === val ? ' active' : '');
-    b.innerHTML = escapeHTML(label) + (count != null ? `<span class="n">${count}</span>` : '');
-    b.addEventListener('click', () => {
-      activeCat = val;
-      rebuildQueue(); renderPills(); renderDeck(true);
-    });
-    return b;
-  };
-  wrap.appendChild(mk('Tout', 'all', state.cards.length));
-  cats.forEach(([cat, n]) => wrap.appendChild(mk(cat, cat, n)));
-  // update datalist for the add form
-  const dl = $('catOptions');
-  if(dl) dl.innerHTML = cats.map(([c]) => `<option value="${escapeHTML(c)}">`).join('');
-}
-
-/* ---------- study deck ---------- */
-function rebuildQueue(){
-  queue = learning()
-    .filter(c => activeCat === 'all' || c.cat === activeCat)
-    .map(c => c.id);
-  // light shuffle
-  for(let i = queue.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [queue[i], queue[j]] = [queue[j], queue[i]];
-  }
-}
-
-function updateProgress(){
-  const m = mastered().length, total = state.cards.length;
-  $('deckCount').textContent = queue.length + (queue.length === 1 ? ' to review' : ' to review');
-  $('masteredCount').textContent = m;
-  $('barFill').style.width = total ? (m / total * 100) + '%' : '0%';
-}
-
-function renderDeck(enterAnim){
-  deckEl.innerHTML = '';
-  flipped = false;
-  updateProgress();
-
-  if(state.cards.length === 0){
-    deckEl.innerHTML = emptyHTML('☁︎','No cards yet','Add your first French word in the Cartes tab.', 'goManage', 'Add cards');
-    hookEmpty(); toggleActions(false); return;
-  }
-  if(queue.length === 0){
-    deckEl.innerHTML = emptyHTML('✿','Tout est acquis !','You\u2019ve mastered every card in the deck. Bravo.', 'restart', 'Review everything again');
-    hookEmpty(); toggleActions(false); return;
-  }
-  toggleActions(true);
-
-  const slice = queue.slice(0, 3);
-  // render back-to-front
-  for(let i = slice.length - 1; i >= 0; i--){
-    const c = cardById(slice[i]);
-    if(!c) continue;
-    const el = buildCard(c);
-    if(i === 1) el.classList.add('behind');
-    if(i === 2) el.classList.add('behind2');
-    if(i === 0 && enterAnim) el.classList.add('entering');
-    deckEl.appendChild(el);
-  }
-  attachDrag(deckEl.lastElementChild);
-}
-
-function emptyHTML(glyph, title, body, action, label){
-  return `<div class="empty">
-    <div class="glyph">${glyph}</div>
-    <h2>${title}</h2><p>${body}</p>
-    <button class="btn" data-action="${action}">${label}</button>
-  </div>`;
-}
-function hookEmpty(){
-  const b = deckEl.querySelector('[data-action]');
-  if(!b) return;
-  b.addEventListener('click', () => {
-    if(b.dataset.action === 'goManage'){ switchTab('manage'); }
-    else {
-      state.cards.forEach(c => { if(activeCat === 'all' || c.cat === activeCat) c.mastered = false; });
-      persist(); rebuildQueue(); renderPills(); renderDeck(true); renderList();
-    }
-  });
-}
-function toggleActions(on){
-  $('actions').style.opacity = on ? 1 : .25;
-  $('actions').style.pointerEvents = on ? 'auto' : 'none';
-}
-
-function buildCard(c){
-  const el = document.createElement('div');
-  el.className = 'fcard';
-  el.dataset.id = c.id;
-  el.innerHTML = `
-    <div class="stamp acquis">acquis</div>
-    <div class="stamp revoir">à revoir</div>
-    <div class="card-inner">
-      <div class="face front">
-        <span class="cat-tag">${escapeHTML(c.cat || DEFAULT_CAT)}</span>
-        <span class="lang-chip">Français</span>
-        <div class="word">${escapeHTML(c.fr)}</div>
-        <span class="tap-hint">tap to reveal</span>
+        <span class="text-slate-400 text-[9px] uppercase tracking-wider font-semibold text-center select-none">
+          Glisser pour trier · Clic pour retourner
+        </span>
       </div>
-      <div class="face back">
-        <span class="lang-chip">English</span>
-        <div class="word">${escapeHTML(c.en)}</div>
+    </section>
+
+    <!-- VIEW MANAGE: Form layout beautifully centered inside display frame -->
+    <section id="viewManage" class="hidden w-full h-full flex-col justify-center items-center overflow-visible">
+      
+      <!-- Compact floating paper container for creating cards -->
+      <div class="bg-white rounded-[32px] p-6 shadow-md w-full max-w-[340px] md:max-w-[360px] mx-auto">
+        <h3 class="font-serif font-semibold text-lg text-slate-800 mb-4 text-center">Nouvelle carte</h3>
+        
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Français</label>
+            <input id="inFr" placeholder="ex: Fier" class="w-full text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
+          </div>
+          <div>
+            <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">English</label>
+            <input id="inEn" placeholder="ex: Proud" class="w-full text-sm rounded-xl px-3 py-2 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Explication ou Exemple (optionnel)</label>
+          <textarea id="inDesc" placeholder="ex: Quand ton cœur bat tout fort et grandit..." class="w-full text-sm rounded-xl px-3 py-2.5 bg-slate-100 border-0 focus:ring-2 focus:ring-[#4C599E] outline-none text-slate-800 h-[68px] resize-none"></textarea>
+        </div>
+
+        <button id="btnAdd" disabled class="w-full py-2.5 bg-[#2C2830] text-white text-xs font-semibold rounded-xl hover:bg-slate-800 active:scale-95 transition-all disabled:opacity-35 disabled:cursor-not-allowed">
+          Ajouter au jeu
+        </button>
       </div>
-    </div>`;
-  return el;
-}
-function escapeHTML(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    </section>
 
-/* ---------- drag / swipe ---------- */
-function attachDrag(el){
-  if(!el || !el.classList.contains('fcard')) return;
-  let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, moved = false;
-  const stampA = el.querySelector('.stamp.acquis');
-  const stampR = el.querySelector('.stamp.revoir');
+  </main>
 
-  const down = e => {
-    if(animating) return;
-    dragging = true; moved = false;
-    startX = e.clientX; startY = e.clientY;
-    el.classList.add('dragging');
-    el.setPointerCapture(e.pointerId);
-  };
-  const move = e => {
-    if(!dragging) return;
-    dx = e.clientX - startX; dy = e.clientY - startY;
-    if(Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
-    const rot = dx * 0.06;
-    el.style.transform = `translate(${dx}px, ${dy * 0.4}px) rotate(${rot}deg)`;
-    const p = Math.min(Math.abs(dx) / 90, 1);
-    if(dx > 0){ stampA.style.opacity = p; stampR.style.opacity = 0; }
-    else { stampR.style.opacity = p; stampA.style.opacity = 0; }
-  };
-  const up = () => {
-    if(!dragging) return;
-    dragging = false;
-    el.classList.remove('dragging');
-    const threshold = Math.min(deckEl.offsetWidth * 0.32, 130);
-    if(dx > threshold){ fly(el, 'right'); }
-    else if(dx < -threshold){ fly(el, 'left'); }
-    else{
-      el.style.transition = 'transform .35s cubic-bezier(.22,1,.36,1)';
-      el.style.transform = '';
-      stampA.style.opacity = 0; stampR.style.opacity = 0;
-      setTimeout(() => el.style.transition = '', 360);
-      if(!moved) flipCard(el);
-    }
-    dx = 0; dy = 0;
-  };
-  el.addEventListener('pointerdown', down);
-  el.addEventListener('pointermove', move);
-  el.addEventListener('pointerup', up);
-  el.addEventListener('pointercancel', up);
-}
+  <!-- Micro Toast Alerts -->
+  <div id="toast" class="toast"></div>
 
-function flipCard(el){
-  el = el || deckEl.lastElementChild;
-  if(!el || !el.classList.contains('fcard')) return;
-  flipped = !flipped;
-  el.classList.toggle('flipped', flipped);
-}
+  <!-- ---------- STREAMING_CHUNK: Loading client storage adapters and state machine ... ---------- -->
+  <script>
+    (() => {
+      'use strict';
+      
+      const KEY = 'cartes-deck-v3';
+      const DEFAULT_DESC = "Un mot précieux de notre vocabulaire de tous les jours.";
+      
+      function uid() {
+        return Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      }
+      
+      let state = { cards: [] };
+      let queue = [];
+      let flipped = false;
+      let animating = false;
+      let hideExamples = false;
 
-function fly(el, dir){
-  if(animating) return;
-  animating = true;
-  el.querySelector('.stamp.' + (dir === 'right' ? 'acquis' : 'revoir')).style.opacity = 1;
-  el.classList.add(dir === 'right' ? 'fly-right' : 'fly-left');
-  const id = el.dataset.id;
-  if(dir === 'right'){
-    const c = cardById(id);
-    if(c){ c.mastered = true; persist(); }
-    queue = queue.filter(q => q !== id);
-  } else {
-    // send to back of queue
-    queue = queue.filter(q => q !== id);
-    queue.push(id);
-  }
-  setTimeout(() => {
-    animating = false;
-    renderDeck(true);
-    renderList();
-  }, 320);
-}
+      // Cute context descriptions mapping IMG_6975.jpeg
+      const cuteExplorations = {
+        'à gauche': "Quand tu tournes du côté de ton cœur, là où la montre ne tourne pas.",
+        'à droite': "Le côté de la main avec laquelle tu dessines souvent tes plus belles maisons.",
+        'tout droit': "Suivre son nez sans jamais regarder sur le côté, comme une petite flèche.",
+        'en face de': "Quand tu regardes directement un ami dans les yeux de l'autre côté de la table.",
+        'à côté de': "Tout près, juste à un bras de distance pour pouvoir chuchoter un secret.",
+        'au coin de': "L'endroit magique où deux rues se rencontrent pour former un angle.",
+        'au bout de': "Tout au fond du chemin, là où l'horizon commence à s'ouvrir.",
+        'vers': "Marcher joyeusement dans une direction en gardant les yeux fixés sur son but.",
+        'au-dessus de': "Là où volent les oiseaux et où dorment les nuages douillets.",
+        'au-dessous de': "Sous la table, là où se cachent parfois les petits chats timides.",
+        'traverser': "Passer prudemment d'un trottoir à l'autre en tenant la main d'un grand.",
+        'faire demi-tour': "Tourner sur ses talons pour revenir sur ses pas comme si on avait oublié son ours.",
+        'fier / fière': "Quand ton cœur bat tout fort et grandit parce que tu as accompli quelque chose de difficile.",
+        'déçu(e)': "Quand tu espérais tellement un rayon de soleil, mais que la pluie commence à tomber.",
+        'inquiet / inquiète': "Ce petit sentiment tout gris dans le ventre quand on ne sait pas ce qui va se passer.",
+        'soulagé(e)': "Une grande bouffée d'air frais quand une petite peur s'envole enfin.",
+        'gêné(e)': "Quand tes joues deviennent soudainement toutes rouges comme deux petites tomates.",
+        'épuisé(e)': "Quand tes paupières pèsent trois tonnes et que ton lit semble être le plus doux des nuages.",
+        'agacé(e)': "Ce petit nuage de poussière qui frotte dans ta tête quand les choses ne marchent pas.",
+        'ravi(e)': "Un grand sourire qui s'affiche sur ton visage et des petits papillons dans le cœur.",
+        'bouleversé(e)': "Quand tes émotions se mélangent dans une grande tempête et que tu as besoin d'un gros câlin.",
+        'méfiant(e)': "Quand tu fronces un peu les sourcils et regardes de côté pour voir s'il n'y a pas un piège.",
+        'avoir hâte de': "Compter les dodos sur ses doigts en attendant le jour d'une surprise.",
+        'en avoir marre de': "Croiser fermement les bras en soupirant parce qu'on a déjà fait ça trop de fois.",
+        'se réveiller': "Ouvrir doucement les yeux le matin quand le premier rayon de soleil chatouille ton nez.",
+        'se dépêcher': "Mettre ses chaussures en vitesse pour ne pas laisser filer l'autobus de l'école.",
+        'ranger': "Remettre chaque petit jouet dans sa maisonnette pour que la chambre puisse respirer.",
+        'nettoyer': "Faire briller la table avec de l'eau savonneuse jusqu'à voir son reflet dedans.",
+        'faire la lessive': "Laver les habits parfumés qui dansent en rond dans la machine magique.",
+        'faire les courses': "Remplir le panier de bonnes pommes rouges et de pain croustillant pour le goûter.",
+        'nourrir': "Donner des petits grains de bonheur ou de la pâtée à ton fidèle petit compagnon.",
+        'se détendre': "S'allonger sur l'herbe douce et regarder les nuages dessiner des animaux sauvages.",
+        's’occuper de': "Prendre bien soin d'une petite plante ou d'un ami en lui offrant toute ton attention.",
+        'oublier': "Quand un petit souvenir s'est caché si profondément qu'on ne le retrouve plus pour l'instant.",
+        'emmener': "Prendre la main de quelqu'un pour l'inviter à faire un beau voyage à tes côtés.",
+        'rapporter': "Ramener un joli trésor trouvé dehors pour le partager à la maison.",
+        'la réunion': "Un moment où plusieurs personnes s'asseyent en cercle pour s'écouter et échanger de belles idées.",
+        'l’échéance': "Le jour entouré de rouge sur le calendrier où le travail doit être terminé.",
+        'le dossier': "Une jolie chemise en carton qui garde bien au chaud tous tes papiers précieux.",
+        'la mise à jour': "Apporter du sang neuf et des nouvelles idées pour rajeunir quelque chose.",
+        'le compte rendu': "Une jolie histoire écrite pour raconter tout ce qui s'est dit pendant la séance.",
+        'gérer': "Organiser les choses comme un chef d'orchestre pour que tout le monde joue en harmonie.",
+        'transmettre': "Passer un message ou un objet à un voisin pour qu'il continue sa route.",
+        'joindre': "Attacher ensemble deux morceaux pour qu'ils s'entraident.",
+        'le porte-parole': "La personne choisie pour prêter sa jolie voix aux messages de tout le groupe.",
+        'la demande de renseignements': "Poser une petite question timide pour mieux comprendre le monde.",
+        'le délai': "Le petit temps que l'on s'accorde pour finir un dessin en toute tranquillité.",
+        'accuser réception': "Faire un petit signe de la main ou envoyer un mot pour dire: bien reçu !",
+        'néanmoins': "Un petit pont de mots pour passer à une autre idée sans faire de vagues.",
+        'bien que': "Une jolie pirouette pour dire que quelque chose se produit malgré un obstacle.",
+        'pourtant': "Un petit mot étonné qui montre que les choses ne se passent pas comme prévu.",
+        'd’ailleurs': "Ajouter un petit mot de plus au bord de la conversation pour l'enrichir.",
+        'en revanche': "Faire pencher la balance de l'autre côté avec un argument tout neuf.",
+        'quant à': "Pointer doucement du doigt un sujet particulier pour s'en occuper à son tour.",
+        'afin de': "La direction que prend une action pour réussir à atteindre son petit rêve.",
+        'à condition que': "Une petite règle du jeu à accepter pour pouvoir s'amuser tous ensemble.",
+        'dès que': "Au moment précis, sans perdre une seule seconde, comme un signal de départ.",
+        'tandis que': "Pendant que tu dessines un oiseau, ton ami peint un grand soleil doré.",
+        'malgré': "Avancer courageusement sous la pluie sans perdre son sourire.",
+        'dorénavant': "À partir de maintenant, on fera les choses avec un regard tout nouveau.",
+        'parfois': "Pas tous les jours, juste quand une petite fée décide de passer.",
+        'souvent': "De nombreuses fois, presque comme une habitude qu'on adore répétée.",
+        'rarement': "Aussi exceptionnel que de croiser un trèfle à quatre feuilles dans le jardin.",
+        'tout à l’heure': "Dans un petit moment, juste après avoir fini de ranger nos crayons.",
+        'la veille': "Le jour juste avant, celui qui s'est endormi pour laisser place à aujourd'hui.",
+        'le lendemain': "Le jour qui attend sagement que la nuit se termine pour s'éveiller.",
+        'auparavant': "Il y a bien longtemps, avant que l'histoire ne commence.",
+        'désormais': "Le point de départ d'une toute nouvelle habitude à garder dans le cœur.",
+        'tous les deux jours': "Sauter un dodo sur deux pour faire une jolie routine régulière.",
+        'de temps en temps': "Quand l'envie nous prend, comme une surprise au milieu de la semaine.",
+        'le rez-de-chaussée': "La partie de la maison qui touche la terre et où les pas résonnent directement.",
+        'l’étage': "Monter le bel escalier pour se rapprocher un peu plus du ciel.",
+        'le grenier': "Le nid secret sous le toit où dorment les vieux jouets et les souvenirs oubliés.",
+        'le sous-sol': "Sous les pieds, là où dorment les outils et les réserves de confitures.",
+        'la cour': "Un petit carré de liberté dehors pour courir sous le grand soleil.",
+        'le quai': "Un pont de planches au bord de l'eau pour saluer les bateaux qui partent en voyage.",
+        'la rivière': "Un long ruban bleu qui coule et chante au milieu des arbres.",
+        'le chauffage': "La douce chaleur invisible qui enveloppe la maison quand l'hiver est là.",
+        'la poussière': "Des petits grains gris volants qui aiment se poser sur les meubles pour faire des dessins.",
+        'l’aspirateur': "Le petit monstre bruyant qui avale toute la poussière de la maison.",
+        'déménager': "Ranger sa vie dans des cartons pour aller s'installer dans une nouvelle aventure.",
+        'emménager': "Déballer ses peluches et ses secrets dans sa nouvelle chambre toute neuve.",
+        'atteindre': "Tendre le bras très fort pour décrocher la plus haute pomme de l'arbre.",
+        'craindre': "Ce frisson qui arrive quand l'orage gronde ou que l'ombre est un peu trop grande.",
+        'résoudre': "Trouver la clé d'une énigme compliquée pour voir le sourire revenir.",
+        'se plaindre': "Dire son chagrin ou sa colère avec de petits mots fâchés.",
+        'convaincre': "Partager ses arguments avec tant de passion que l'autre finit par dire oui.",
+        's’apercevoir de': "Remarquer soudain une petite coccinelle posée sur sa manche.",
+        'se débrouiller': "Trouver une idée astucieuse tout seul comme un grand.",
+        'avoir beau + inf.': "Essayer encore et encore sans réussir, mais avec beaucoup de courage.",
+        'valoir la peine': "Un effort qui coûte un peu mais qui apporte tellement de bonheur à la fin.",
+        'il s’agit de': "Le sujet principal du jeu, le but secret qu'on doit découvrir ensemble."
+      };
 
-/* button swipes */
-function buttonSwipe(dir){
-  const el = deckEl.lastElementChild;
-  if(!el || !el.classList.contains('fcard') || animating) return;
-  el.style.transform = `translate(${dir === 'right' ? 40 : -40}px, -6px) rotate(${dir === 'right' ? 4 : -4}deg)`;
-  requestAnimationFrame(() => fly(el, dir));
-}
-$('btnRight').addEventListener('click', () => buttonSwipe('right'));
-$('btnLeft').addEventListener('click', () => buttonSwipe('left'));
-$('btnFlip').addEventListener('click', () => flipCard());
+      const seed = [
+        { fr: 'à gauche', en: 'to the left' },
+        { fr: 'à droite', en: 'to the right' },
+        { fr: 'tout droit', en: 'straight ahead' },
+        { fr: 'en face de', en: 'across from' },
+        { fr: 'à côté de', en: 'next to' },
+        { fr: 'au coin de', en: 'at the corner of' },
+        { fr: 'au bout de', en: 'at the end of' },
+        { fr: 'vers', en: 'towards' },
+        { fr: 'au-dessus de', en: 'above' },
+        { fr: 'au-dessous de', en: 'below' },
+        { fr: 'traverser', en: 'to cross' },
+        { fr: 'faire demi-tour', en: 'to turn around' },
+        { fr: 'fier / fière', en: 'proud' },
+        { fr: 'déçu(e)', en: 'disappointed' },
+        { fr: 'inquiet / inquiète', en: 'worried' },
+        { fr: 'soulagé(e)', en: 'relieved' },
+        { fr: 'gêné(e)', en: 'embarrassed' },
+        { fr: 'épuisé(e)', en: 'exhausted' },
+        { fr: 'agacé(e)', en: 'annoyed' },
+        { fr: 'ravi(e)', en: 'delighted' },
+        { fr: 'bouleversé(e)', en: 'deeply upset' },
+        { fr: 'méfiant(e)', en: 'suspicious' },
+        { fr: 'avoir hâte de', en: 'to look forward to' },
+        { fr: 'en avoir marre de', en: 'to be fed up with' }
+      ];
 
-/* keyboard */
-document.addEventListener('keydown', e => {
-  if($('viewStudy').classList.contains('active')){
-    if(e.key === 'ArrowRight') buttonSwipe('right');
-    if(e.key === 'ArrowLeft') buttonSwipe('left');
-    if(e.key === ' ' && document.activeElement.tagName !== 'INPUT'){ e.preventDefault(); flipCard(); }
-  }
-});
+      const THEMES = ['blue', 'orange', 'sage', 'rose'];
+      const SHAPES = ['shape-1', 'shape-2', 'shape-3', 'shape-4'];
 
-/* ---------- manage view ---------- */
-const inFr = $('inFr'), inEn = $('inEn'), inCat = $('inCat'), btnAdd = $('btnAdd');
-function validate(){ btnAdd.disabled = !(inFr.value.trim() && inEn.value.trim()); }
-inFr.addEventListener('input', validate);
-inEn.addEventListener('input', validate);
-[inFr, inEn, inCat].forEach(i => i.addEventListener('keydown', e => { if(e.key === 'Enter' && !btnAdd.disabled) addCard(); }));
-btnAdd.addEventListener('click', addCard);
+      const memoryStorage = {
+        _data: {},
+        get: function(k) { return Promise.resolve({ value: this._data[k] || null }); },
+        set: function(k, v) { this._data[k] = v; return Promise.resolve(); }
+      };
+      const getStorage = () => window.storage || memoryStorage;
 
-function addCard(){
-  const cat = inCat.value.trim() || DEFAULT_CAT;
-  const c = { id: uid(), fr: inFr.value.trim(), en: inEn.value.trim(), cat, mastered: false };
-  state.cards.unshift(c);
-  if(activeCat === 'all' || activeCat === cat) queue.unshift(c.id);
-  persist();
-  inFr.value = ''; inEn.value = ''; validate(); inFr.focus();
-  renderPills(); renderList(); updateProgress();
-  if(deckEl.querySelector('.empty')) renderDeck(true);
-  toast('Card added');
-}
+      async function load() {
+        try {
+          const res = await getStorage().get(KEY);
+          if (res && res.value) {
+            state = JSON.parse(res.value);
+          }
+        } catch (e) {
+          console.warn('Fallback storage initiated');
+        }
 
-function renderList(){
-  const list = $('cardList');
-  $('listCount').textContent = state.cards.length + ' cards · ' + mastered().length + ' mastered';
-  if(state.cards.length === 0){
-    list.innerHTML = '<div class="empty" style="padding:40px 20px"><div class="glyph">✎</div><p>No cards yet. Add one above to start building your deck.</p></div>';
-    return;
-  }
-  list.innerHTML = '';
-  // group cards by category
-  const groups = new Map();
-  state.cards.forEach(c => {
-    const k = c.cat || DEFAULT_CAT;
-    if(!groups.has(k)) groups.set(k, []);
-    groups.get(k).push(c);
-  });
-  const sorted = [...groups.entries()].sort((a,b) => a[0].localeCompare(b[0], 'fr'));
-  sorted.forEach(([cat, cards]) => {
-    const head = document.createElement('div');
-    head.className = 'sec-head';
-    const m = cards.filter(c => c.mastered).length;
-    head.innerHTML = `<h4>${escapeHTML(cat)}</h4><span>${m}/${cards.length} acquis</span>`;
-    list.appendChild(head);
-    cards.forEach(c => list.appendChild(buildRow(c)));
-  });
-}
+        state.cards.forEach(c => {
+          if (!c.desc) c.desc = cuteExplorations[c.fr] || DEFAULT_DESC;
+        });
 
-function buildRow(c){
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = `
-      <span class="dot ${c.mastered ? 'm' : 'l'}" title="${c.mastered ? 'Mastered' : 'Learning'}"></span>
-      <div class="words"><div class="fr">${escapeHTML(c.fr)}</div><div class="en">${escapeHTML(c.en)}</div></div>
-      ${c.mastered ? `<button class="icon-btn reset" aria-label="Move back to learning" title="Review again">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6"/><path d="M3.5 15a9 9 0 1 0 2-9.7L1 10"/></svg>
-      </button>` : ''}
-      <button class="icon-btn del" aria-label="Delete card">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-      </button>`;
-    row.querySelector('.del').addEventListener('click', () => {
-      row.classList.add('removing');
-      setTimeout(() => {
-        state.cards = state.cards.filter(x => x.id !== c.id);
-        queue = queue.filter(q => q !== c.id);
-        if(activeCat !== 'all' && !state.cards.some(x => x.cat === activeCat)) activeCat = 'all';
-        persist(); renderPills(); renderList(); renderDeck(false);
-      }, 240);
-    });
-    const rst = row.querySelector('.reset');
-    if(rst) rst.addEventListener('click', () => {
-      c.mastered = false;
-      if(activeCat === 'all' || c.cat === activeCat) queue.push(c.id);
-      persist(); renderPills(); renderList(); renderDeck(false);
-      toast('Back in the deck');
-    });
-    return row;
-}
+        const have = new Set(state.cards.map(c => c.fr.trim().toLowerCase()));
+        let added = false;
+        seed.forEach(s => {
+          if (!have.has(s.fr.trim().toLowerCase())) {
+            state.cards.push({
+              id: uid(),
+              fr: s.fr,
+              en: s.en,
+              desc: cuteExplorations[s.fr] || DEFAULT_DESC,
+              mastered: false
+            });
+            added = true;
+          }
+        });
+        if (added) persist();
+      }
 
-/* ---------- tabs ---------- */
-function switchTab(which){
-  const study = which === 'study';
-  $('tabStudy').classList.toggle('active', study);
-  $('tabManage').classList.toggle('active', !study);
-  $('viewStudy').classList.toggle('active', study);
-  $('viewManage').classList.toggle('active', !study);
-}
-$('tabStudy').addEventListener('click', () => switchTab('study'));
-$('tabManage').addEventListener('click', () => switchTab('manage'));
+      let saveTimer = null;
+      function persist() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(async () => {
+          try {
+            await getStorage().set(KEY, JSON.stringify(state));
+          } catch (e) {
+            console.warn('Save sequence error', e);
+          }
+        }, 250);
+      }
 
-/* ---------- init ---------- */
-load().then(() => {
-  rebuildQueue();
-  renderPills();
-  renderDeck(true);
-  renderList();
-});
-})();
-</script>
+      const $ = id => document.getElementById(id);
+      const deckEl = $('deck');
+
+      function cardById(id) {
+        return state.cards.find(c => c.id === id);
+      }
+
+      function learning() {
+        return state.cards.filter(c => !c.mastered);
+      }
+
+      function mastered() {
+        return state.cards.filter(c => c.mastered);
+      }
+
+      function toast(msg) {
+        const t = $('toast');
+        t.textContent = msg;
+        t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-8 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-0 opacity-100";
+        clearTimeout(t._h);
+        t._h = setTimeout(() => {
+          t.className = "toast fixed left-1/2 -translate-x-1/2 bottom-8 bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full shadow-lg z-[9999] transition-all transform translate-y-4 opacity-0 pointer-events-none";
+        }, 1800);
+      }
+
+      /* ---------- STREAMING_CHUNK: Managing card shuffler queue lists ... ---------- */
+      function rebuildQueue() {
+        queue = learning().map(c => c.id);
+        
+        for (let i = queue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [queue[i], queue[j]] = [queue[j], queue[i]];
+        }
+      }
+
+      function updateProgress() {
+        const m = mastered().length;
+        $('deckCount').textContent = queue.length + (queue.length === 1 ? ' restant' : ' restants');
+        $('masteredCount').textContent = `${m} acquis`;
+      }
+
+      function getCardVisuals(id) {
+        let code = 0;
+        for (let i = 0; i < id.length; i++) {
+          code += id.charCodeAt(i);
+        }
+        return {
+          theme: THEMES[code % THEMES.length],
+          shape: SHAPES[(code + 2) % SHAPES.length]
+        };
+      }
+
+      function renderDeck(initial) {
+        flipped = false;
+        updateProgress();
+
+        if (state.cards.length === 0) {
+          deckEl.innerHTML = emptyHTML('☁︎', 'Aucune carte', 'Commencez à bâtir votre vocabulaire en ajoutant une carte.', 'goManage', 'Ajouter des cartes');
+          hookEmpty();
+          toggleActions(false);
+          return;
+        }
+
+        if (queue.length === 0) {
+          deckEl.innerHTML = emptyHTML('✿', 'Tout est acquis !', 'Vous avez maîtrisé toutes vos cartes.', 'restart', 'Réviser à nouveau');
+          hookEmpty();
+          toggleActions(false);
+          return;
+        }
+
+        toggleActions(true);
+
+        if (initial) {
+          deckEl.innerHTML = '';
+          const slice = queue.slice(0, 3);
+          for (let i = slice.length - 1; i >= 0; i--) {
+            const c = cardById(slice[i]);
+            if (!c) continue;
+            const el = buildCard(c);
+            if (i === 1) el.className = 'fcard absolute inset-0 rounded-[32px] behind';
+            if (i === 2) el.className = 'fcard absolute inset-0 rounded-[32px] behind2';
+            if (i === 0) el.className = 'fcard absolute inset-0 rounded-[32px] z-20 entering';
+            deckEl.appendChild(el);
+          }
+          attachDrag(deckEl.lastElementChild);
+        }
+      }
+
+      function emptyHTML(glyph, title, body, action, label) {
+        return `<div class="empty flex flex-col items-center justify-center text-center p-6 bg-white rounded-[32px] shadow-lg w-full h-full">
+          <div class="glyph text-5xl text-[#E38379] mb-4">${glyph}</div>
+          <h2 class="font-serif font-semibold text-xl text-slate-800 mb-2">${title}</h2>
+          <p class="text-xs text-slate-500 max-w-[220px] mb-6 leading-relaxed">${body}</p>
+          <button class="btn bg-[#2C2830] text-white text-xs font-semibold px-6 py-3 rounded-full hover:scale-105 transition-all" data-action="${action}">${label}</button>
+        </div>`;
+      }
+
+      function hookEmpty() {
+        const b = deckEl.querySelector('[data-action]');
+        if (!b) return;
+        b.addEventListener('click', () => {
+          if (b.dataset.action === 'goManage') {
+            switchTab('manage');
+          } else {
+            state.cards.forEach(c => {
+              c.mastered = false;
+            });
+            persist();
+            rebuildQueue();
+            renderDeck(true);
+          }
+        });
+      }
+
+      function toggleActions(on) {
+        const el = $('actions');
+        if (el) {
+          el.style.opacity = on ? '1' : '0.25';
+          el.style.pointerEvents = on ? 'auto' : 'none';
+        }
+      }
+
+      function buildCard(c) {
+        const el = document.createElement('div');
+        el.dataset.id = c.id;
+
+        const visuals = getCardVisuals(c.id);
+
+        el.innerHTML = `
+          <div class="stamp acquis">acquis</div>
+          <div class="stamp revoir">à revoir</div>
+          <div class="card-inner">
+            <div class="face front grid-${visuals.theme}">
+              <div class="spotlight">
+                <div class="word-banner theme-${visuals.theme}">
+                  <span class="font-serif text-lg md:text-xl font-semibold">${escapeHTML(c.fr)}</span>
+                </div>
+                <div class="illustration-text text-slate-600 font-sans text-xs px-2 leading-relaxed text-center max-w-[210px] mx-auto">
+                  ${escapeHTML(c.desc || DEFAULT_DESC)}
+                </div>
+              </div>
+            </div>
+            
+            <div class="face back theme-${visuals.theme}">
+              <div class="geo-shape ${visuals.shape}">
+                <div class="translation font-serif font-bold text-xl md:text-2xl text-white text-center leading-tight">
+                  ${escapeHTML(c.en)}
+                </div>
+              </div>
+            </div>
+          </div>`;
+        return el;
+      }
+
+      function escapeHTML(s) {
+        return s.replace(/[&<>"']/g, m => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[m]));
+      }
+
+      /* ---------- STREAMING_CHUNK: Binding pointer gestures for card flyoffs ... ---------- */
+      function attachDrag(el) {
+        if (!el) return;
+        let startX = 0, startY = 0, dx = 0, dy = 0;
+        let dragging = false, moved = false;
+
+        const stampA = el.querySelector('.stamp.acquis');
+        const stampR = el.querySelector('.stamp.revoir');
+
+        const down = e => {
+          if (animating) return;
+          dragging = true;
+          moved = false;
+          startX = e.clientX;
+          startY = e.clientY;
+          el.setPointerCapture(e.pointerId);
+          el.style.transition = 'none';
+        };
+
+        const move = e => {
+          if (!dragging) return;
+          dx = e.clientX - startX;
+          dy = e.clientY - startY;
+
+          if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
+
+          const rot = dx * 0.05;
+          el.style.transform = `translate(${dx}px, ${dy * 0.3}px) rotate(${rot}deg)`;
+          
+          const progress = Math.min(Math.abs(dx) / 100, 1);
+          if (dx > 0) {
+            stampA.style.opacity = progress;
+            stampR.style.opacity = 0;
+          } else {
+            stampR.style.opacity = progress;
+            stampA.style.opacity = 0;
+          }
+        };
+
+        const up = () => {
+          if (!dragging) return;
+          dragging = false;
+
+          const threshold = Math.min(deckEl.offsetWidth * 0.32, 110);
+          if (dx > threshold) {
+            fly(el, 'right');
+          } else if (dx < -threshold) {
+            fly(el, 'left');
+          } else {
+            el.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2)';
+            el.style.transform = '';
+            stampA.style.opacity = 0;
+            stampR.style.opacity = 0;
+            if (!moved) flipCard(el);
+          }
+          dx = 0; dy = 0;
+        };
+
+        el.addEventListener('pointerdown', down);
+        el.addEventListener('pointermove', move);
+        el.addEventListener('pointerup', up);
+        el.addEventListener('pointercancel', up);
+      }
+
+      function flipCard(el) {
+        el = el || deckEl.lastElementChild;
+        if (!el) return;
+        flipped = !flipped;
+        el.classList.toggle('flipped', flipped);
+      }
+
+      function fly(el, dir) {
+        if (animating) return;
+        animating = true;
+
+        el.querySelector('.stamp.' + (dir === 'right' ? 'acquis' : 'revoir')).style.opacity = 1;
+        el.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s';
+        
+        if (dir === 'right') {
+          el.style.transform = 'translate(180vw, -10dvh) rotate(32deg)';
+        } else {
+          el.style.transform = 'translate(-180vw, -10dvh) rotate(-32deg)';
+        }
+        el.style.opacity = '0';
+        
+        const id = el.dataset.id;
+        if (dir === 'right') {
+          const c = cardById(id);
+          if (c) {
+            c.mastered = true;
+            persist();
+          }
+          queue = queue.filter(q => q !== id);
+        } else {
+          queue = queue.filter(q => q !== id);
+          queue.push(id);
+        }
+
+        updateProgress();
+
+        const cardsInDom = Array.from(deckEl.querySelectorAll('.fcard'));
+        const cardB = cardsInDom[cardsInDom.length - 2];
+        const cardC = cardsInDom[cardsInDom.length - 3];
+
+        if (cardB) {
+          cardB.className = 'fcard absolute inset-0 rounded-[32px] z-20';
+          cardB.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s';
+          cardB.style.opacity = '';
+          attachDrag(cardB);
+        }
+        
+        if (cardC) {
+          cardC.className = 'fcard absolute inset-0 rounded-[32px] behind';
+          cardC.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s';
+          cardC.style.opacity = '';
+        }
+
+        const nextSlice = queue.slice(0, 3);
+        if (nextSlice.length >= 3) {
+          const newCardId = nextSlice[2];
+          const newCardData = cardById(newCardId);
+          if (newCardData) {
+            const newEl = buildCard(newCardData);
+            newEl.className = 'fcard absolute inset-0 rounded-[32px] behind2';
+            deckEl.insertBefore(newEl, deckEl.firstChild);
+          }
+        }
+
+        setTimeout(() => {
+          el.remove();
+          animating = false;
+          flipped = false;
+          
+          if (queue.length === 0 || state.cards.length === 0) {
+            renderDeck(true);
+          }
+        }, 300);
+      }
+
+      /* ---------- STREAMING_CHUNK: Binding button events and form handlers... ---------- */
+      function buttonSwipe(dir) {
+        const el = deckEl.lastElementChild;
+        if (!el || animating) return;
+        el.style.transform = `translate(${dir === 'right' ? 30 : -30}px, -4px) rotate(${dir === 'right' ? 3 : -3}deg)`;
+        requestAnimationFrame(() => fly(el, dir));
+      }
+
+      $('btnRight').addEventListener('click', () => buttonSwipe('right'));
+      $('btnLeft').addEventListener('click', () => buttonSwipe('left'));
+      $('btnFlip').addEventListener('click', () => flipCard());
+
+      $('btnToggleExamples').addEventListener('click', () => {
+        hideExamples = !hideExamples;
+        deckEl.classList.toggle('hide-examples', hideExamples);
+        
+        const eyeIcon = $('eyeIcon');
+        if (hideExamples) {
+          eyeIcon.innerHTML = `
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"></path>
+          `;
+          toast('Exemples masqués');
+        } else {
+          eyeIcon.innerHTML = `
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          `;
+          toast('Exemples affichés');
+        }
+      });
+
+      document.addEventListener('keydown', e => {
+        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight') buttonSwipe('right');
+        if (e.key === 'ArrowLeft') buttonSwipe('left');
+        if (e.key === ' ') {
+          e.preventDefault();
+          flipCard();
+        }
+      });
+
+      const inFr = $('inFr'),
+            inEn = $('inEn'),
+            inDesc = $('inDesc'),
+            btnAdd = $('btnAdd');
+
+      function validate() {
+        btnAdd.disabled = !(inFr.value.trim() && inEn.value.trim());
+      }
+
+      inFr.addEventListener('input', validate);
+      inEn.addEventListener('input', validate);
+
+      [inFr, inEn, inDesc].forEach(i => i.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !btnAdd.disabled) addCard();
+      }));
+
+      btnAdd.addEventListener('click', addCard);
+
+      function addCard() {
+        const c = {
+          id: uid(),
+          fr: inFr.value.trim(),
+          en: inEn.value.trim(),
+          desc: inDesc.value.trim() || DEFAULT_DESC,
+          mastered: false
+        };
+        state.cards.unshift(c);
+        queue.unshift(c.id);
+        persist();
+
+        inFr.value = '';
+        inEn.value = '';
+        inDesc.value = '';
+        validate();
+        inFr.focus();
+
+        updateProgress();
+
+        if (deckEl.querySelector('.empty')) renderDeck(true);
+        toast('Carte ajoutée !');
+      }
+
+      function switchTab(which) {
+        const study = which === 'study';
+        
+        $('tabStudy').className = `px-5 py-1.5 text-xs font-semibold rounded-full transition-all ${study ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'}`;
+        $('tabManage').className = `px-5 py-1.5 text-xs font-semibold rounded-full transition-all ${!study ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'}`;
+        
+        if (study) {
+          $('viewStudy').classList.add('flex');
+          $('viewStudy').classList.remove('hidden');
+          $('viewManage').classList.add('hidden');
+          $('viewManage').classList.remove('flex');
+        } else {
+          $('viewStudy').classList.remove('flex');
+          $('viewStudy').classList.add('hidden');
+          $('viewManage').classList.remove('hidden');
+          $('viewManage').classList.add('flex');
+        }
+      }
+      
+      $('tabStudy').addEventListener('click', () => switchTab('study'));
+      $('tabManage').addEventListener('click', () => switchTab('manage'));
+
+      load().then(() => {
+        rebuildQueue();
+        renderDeck(true);
+      });
+    })();
+  </script>
 </body>
+
 </html>
